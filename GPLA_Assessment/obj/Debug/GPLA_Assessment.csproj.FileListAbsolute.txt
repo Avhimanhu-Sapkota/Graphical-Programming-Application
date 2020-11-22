@@ -7,3 +7,4 @@ D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_A
 D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.csproj.CoreCompileInputs.cache
 D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.exe
 D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.pdb
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.Form1.resources
