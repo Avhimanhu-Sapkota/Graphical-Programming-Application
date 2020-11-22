@@ -1,0 +1,9 @@
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\bin\Debug\GPLA_Assessment.exe.config
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\bin\Debug\GPLA_Assessment.exe
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\bin\Debug\GPLA_Assessment.pdb
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.csprojAssemblyReference.cache
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.Properties.Resources.resources
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.csproj.GenerateResource.cache
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.csproj.CoreCompileInputs.cache
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.exe
+D:\C# Projects\GPLA_Assessment\graphical-programming-language-application\GPLA_Assessment\obj\Debug\GPLA_Assessment.pdb
