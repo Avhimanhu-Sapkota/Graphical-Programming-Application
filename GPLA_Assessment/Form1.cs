@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,14 @@ namespace GPLA_Assessment
 {
     public partial class Form1 : Form
     {
+        Bitmap bitmapCanvas = new Bitmap(500, 500);
+        Canvas canvasObject;
+        ArrayList shapes = new ArrayList();
+
         public Form1()
         {
             InitializeComponent();
+            canvasObject = new Canvas(Graphics.FromImage(bitmapCanvas));
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -40,7 +46,10 @@ namespace GPLA_Assessment
 
         private void userGuidelinesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string message = "Application Interface:\nCanvas: It is a display panel or drawing " +
+            string message = "The application contains three different components. The empty area " +
+                "at the top of the application is a 'Canvas'. The multiple line textbox area is 'Program Window'" +
+                ". The single line textbox area, at the end of the application, is 'Command Line Window'" +
+                "\n\nApplication Interface:\nCanvas: It is a display panel or drawing " +
                 "area where you will be able to view your outputs in accordance to the commands " +
                 "you type in Program Window and Command Line Window.\n\nProgram Window: A text " +
                 "area where you can type your programming codes which will allow you to perform " +
@@ -64,7 +73,7 @@ namespace GPLA_Assessment
                 "the current pen position.\n\n5. Triangle - This command will draw a triangle from " +
                 "the current pen position. \n\n6. Pen < color > -This command will specify the color " +
                 "of the pen. However, this command only supports limited colors, they are: red, " +
-                "blue, green, …… If you fail to specify colors from the list you may encounter " +
+                "blue, yellow and green. If you fail to specify colors from the list you may encounter " +
                 "errors.\n\n7. Fill < on / off > -This command will specify color fills for " +
                 "shapes(rectangle, circle and triangle).Example: Fill on will display the " +
                 "shape filled with the chosen color while Fill off will display the shape " +
@@ -82,5 +91,100 @@ namespace GPLA_Assessment
 
             MessageBox.Show(message, title);
         }
+
+        private void commandLineWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                String command = commandLineWindow.Text;
+                command = command.Trim().ToLower();
+
+                ShapeIdentifier identiferObject = new ShapeIdentifier();
+                /*try
+                {
+                    shapes.Add(identiferObject.getShape("rectangle"));
+                    shapes.Add(identiferObject.getShape("circle"));
+                    shapes.Add(identiferObject.getShape("triangle"));
+                }
+                catch (ArgumentException exp)
+                {
+                    Console.WriteLine("Invalid Shape: " + exp);
+                }*/
+                Shape newShape;
+                Color newColor = Color.Black;
+                //String programCode = programWindow.Text;
+                //programReader(programCode);
+        
+                if (command.Equals("line") == true)
+                {
+                    canvasObject.DrawLine(100, 100);
+                }
+                else if (command.Equals("rectangle") == true)
+                {
+                    newShape = identiferObject.getShape("rectangle");
+                    newShape.set(newColor, 10, 20, 180, 80);
+                    shapes.Add(newShape);
+                }
+                else if (command.Equals("circle") == true)
+                {
+                    newShape = identiferObject.getShape("circle");
+                    newShape.set(newColor, 10, 20, 50);
+                    shapes.Add(newShape);
+                }
+                else if (command.Equals("triangle") == true)
+                {
+                    newShape = identiferObject.getShape("rectangle");
+                    newShape.set(newColor, 10, 20, 22, 38);
+                    shapes.Add(newShape);
+                }
+                else 
+                { 
+
+                }
+                
+                commandLineWindow.Text = "";
+                Refresh();
+            }
+        }
+
+        private void displayCanvas_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawImageUnscaled(bitmapCanvas, 0, 0);
+
+            for (int index = 0; index < shapes.Count; index++)
+            {
+                Shape newShapeObject;
+                newShapeObject = (Shape)shapes[index];
+
+                if(newShapeObject != null)
+                {
+                    newShapeObject.draw(g);
+                    Console.WriteLine(newShapeObject.ToString());
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Shape");
+                }
+            }
+            
+        }
+
+
+        /*public void programReader(String enteredCode)
+        {
+
+           String code = enteredCode.Trim();
+           String[] codeSplitter = code.Split(' ');
+
+           String command = codeSplitter[0];
+           String parameters = codeSplitter[1];
+
+           String[] parameterSplitter = parameters.Split(',');
+           int parameter1 = Convert.ToInt32(parameterSplitter[0]);
+           int parameter2 = Convert.ToInt32(parameterSplitter[1]);
+
+           Console.WriteLine(code + "\n" + command + "\n" + parameters + "\n" + parameter1 + "\n" + parameter2);
+        }*/
     }
 }
