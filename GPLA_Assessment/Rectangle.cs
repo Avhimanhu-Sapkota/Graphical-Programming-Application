@@ -16,15 +16,15 @@ namespace GPLA_Assessment
             breadth = 100;
         }
 
-        public Rectangle(Color penColor, int pointX, int pointY, int length, int breadth):base(penColor, pointX, pointY)
+        public Rectangle(Color penColor, bool fill, int pointX, int pointY, int length, int breadth):base(penColor, fill, pointX, pointY)
         {
             this.length = length;
             this.breadth = breadth;
         }
 
-        public override void set(Color penColor, params int[] list)
+        public override void set(Color penColor, bool fill, params int[] list)
         {
-            base.set(penColor, list[0], list[1]);
+            base.set(penColor, fill, list[0], list[1]);
             this.length = list[2];
             this.breadth = list[3];
         }
@@ -32,8 +32,13 @@ namespace GPLA_Assessment
         public override void draw (Graphics g)
         {
             Pen pen = new Pen(penColor, 1);
-            SolidBrush brush = new SolidBrush(penColor);
-            g.FillRectangle(brush, pointX, pointY, length, breadth);
+
+            if (fill == true)
+            {
+                SolidBrush brush = new SolidBrush(penColor);
+                g.FillRectangle(brush, pointX, pointY, length, breadth);
+            }
+            
             g.DrawRectangle(pen, pointX, pointY, length, breadth);
         }
     }

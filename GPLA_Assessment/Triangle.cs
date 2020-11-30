@@ -16,15 +16,15 @@ namespace GPLA_Assessment
         {
         }
 
-        public Triangle(Color penColor, int pointX, int pointY, int tgPoint1, int tgPoint2):base(penColor, pointX, pointY)
+        public Triangle(Color penColor, bool fill, int pointX, int pointY, int tgPoint1, int tgPoint2) : base(penColor, fill,  pointX, pointY)
         {
-            this.tgPoint1 = pointX + 12;
-            this.tgPoint2 = pointY + 18;
+            //this.tgPoint1 = pointX + 430;
+            //this.tgPoint2 = pointY + 450;
         }
 
-        public override void set(Color penColor, params int[] list)
+        public override void set(Color penColor, bool fill, params int[] list)
         {
-            base.set(penColor, list[0], list[1]);
+            base.set(penColor, fill, list[0], list[1]);
             this.tgPoint1 = list[2];
             this.tgPoint2 = list[3];
         }
@@ -34,11 +34,16 @@ namespace GPLA_Assessment
             Point point1 = new Point(pointX, pointY);
             Point point2 = new Point(pointX, tgPoint1);
             Point point3 = new Point(tgPoint1, tgPoint2);
-            Point[] trianglePoints = { point1, point2, point3 };
+            Point[] trianglePoints = {point1, point2, point3};
 
             Pen pen = new Pen(penColor, 1);
-            SolidBrush brush = new SolidBrush(penColor);
-            g.FillPolygon(brush, trianglePoints);
+            
+            if (fill == true)
+            {
+                SolidBrush brush = new SolidBrush(penColor);
+                g.FillPolygon(brush, trianglePoints);
+            }
+            Console.WriteLine("Hello");
             g.DrawPolygon(pen, trianglePoints);
         }
     }

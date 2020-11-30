@@ -15,7 +15,6 @@ namespace GPLA_Assessment
     {
         Bitmap bitmapCanvas = new Bitmap(500, 500);
         Canvas canvasObject;
-        ArrayList shapes = new ArrayList();
 
         public Form1()
         {
@@ -55,12 +54,12 @@ namespace GPLA_Assessment
                 "area where you can type your programming codes which will allow you to perform " +
                 "various tasks. This window supports multiple line of codes. It only supports " +
                 "some command prompts listed below. If you fail to type commands correctly, " +
-                "you may encounter errors.\n\nCommands supported in Program Window:\n1. Position " +
-                "Pen (moveTo) - This command will change the position of your pen to the " +
+                "you may encounter errors.\n\nCommands supported in Program Window:\n1. " +
+                "moveTo <x>,<y> - This command will change the position of your pen to the " +
                 "specified position in the canvas. In place of moveTo you are supposed to " +
                 "give x-axis and y-axis coordinates to place you pen's position. Example: " +
                 "Position Pen 50, 100 will change the position of your pen to x-axis: 50 and " +
-                "y-axis: 100\n\n2. Pen draw (drawTo) - This command will draw a line from the " +
+                "y-axis: 100\n\n2. drawTo <x>,<y>- This command will draw a line from the " +
                 "current position of the pen to the specified position in the canvas. " +
                 "In place of drawTo you are supposed to give x-axis and y-axis coordinates " +
                 "which will be the end point of your line.  Example: Position draw 50, 100 " +
@@ -91,6 +90,37 @@ namespace GPLA_Assessment
 
             MessageBox.Show(message, title);
         }
+        public void programReader(String enteredCode)
+        {
+            ShapeIdentifier identiferObject = new ShapeIdentifier();
+
+            String code = enteredCode.Trim();
+            if (code.Equals("clear"))
+            {
+                canvasObject.ClearScreen();
+            }
+
+            else if (code.Equals("reset"))
+            {
+                canvasObject.ResetPen();
+            }
+
+            else if (code.Equals("run"))
+            {
+                string[] multilineCodes = programWindow.Lines;
+                foreach (string line in multilineCodes)
+                {
+                    canvasObject.programReader(line);
+                }
+            }
+
+            else
+            {
+                canvasObject.programReader(code);
+            }
+            
+            
+        }
 
         private void commandLineWindow_KeyDown(object sender, KeyEventArgs e)
         {
@@ -98,93 +128,22 @@ namespace GPLA_Assessment
             {
                 String command = commandLineWindow.Text;
                 command = command.Trim().ToLower();
-
-                ShapeIdentifier identiferObject = new ShapeIdentifier();
-                /*try
-                {
-                    shapes.Add(identiferObject.getShape("rectangle"));
-                    shapes.Add(identiferObject.getShape("circle"));
-                    shapes.Add(identiferObject.getShape("triangle"));
-                }
-                catch (ArgumentException exp)
-                {
-                    Console.WriteLine("Invalid Shape: " + exp);
-                }*/
-                Shape newShape;
-                Color newColor = Color.Black;
-                //String programCode = programWindow.Text;
-                //programReader(programCode);
-        
-                if (command.Equals("line") == true)
-                {
-                    canvasObject.DrawLine(100, 100);
-                }
-                else if (command.Equals("rectangle") == true)
-                {
-                    newShape = identiferObject.getShape("rectangle");
-                    newShape.set(newColor, 10, 20, 180, 80);
-                    shapes.Add(newShape);
-                }
-                else if (command.Equals("circle") == true)
-                {
-                    newShape = identiferObject.getShape("circle");
-                    newShape.set(newColor, 10, 20, 50);
-                    shapes.Add(newShape);
-                }
-                else if (command.Equals("triangle") == true)
-                {
-                    newShape = identiferObject.getShape("rectangle");
-                    newShape.set(newColor, 10, 20, 22, 38);
-                    shapes.Add(newShape);
-                }
-                else 
-                { 
-
-                }
-                
+                programReader(command);
                 commandLineWindow.Text = "";
                 Refresh();
+                
             }
         }
 
-        private void displayCanvas_Paint(object sender, PaintEventArgs e)
+        
+        
+
+    private void displayCanvas_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.DrawImageUnscaled(bitmapCanvas, 0, 0);
-
-            for (int index = 0; index < shapes.Count; index++)
-            {
-                Shape newShapeObject;
-                newShapeObject = (Shape)shapes[index];
-
-                if(newShapeObject != null)
-                {
-                    newShapeObject.draw(g);
-                    Console.WriteLine(newShapeObject.ToString());
-                }
-                else
-                {
-                    Console.WriteLine("Invalid Shape");
-                }
-            }
-            
         }
 
 
-        /*public void programReader(String enteredCode)
-        {
-
-           String code = enteredCode.Trim();
-           String[] codeSplitter = code.Split(' ');
-
-           String command = codeSplitter[0];
-           String parameters = codeSplitter[1];
-
-           String[] parameterSplitter = parameters.Split(',');
-           int parameter1 = Convert.ToInt32(parameterSplitter[0]);
-           int parameter2 = Convert.ToInt32(parameterSplitter[1]);
-
-           Console.WriteLine(code + "\n" + command + "\n" + parameters + "\n" + parameter1 + "\n" + parameter2);
-        }*/
     }
 }

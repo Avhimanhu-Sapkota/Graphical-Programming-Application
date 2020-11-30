@@ -111,6 +111,7 @@ namespace GPLA_Assessment
             // 
             // displayCanvas
             // 
+            this.displayCanvas.BackColor = System.Drawing.Color.White;
             this.displayCanvas.Location = new System.Drawing.Point(15, 47);
             this.displayCanvas.Name = "displayCanvas";
             this.displayCanvas.Size = new System.Drawing.Size(666, 398);
