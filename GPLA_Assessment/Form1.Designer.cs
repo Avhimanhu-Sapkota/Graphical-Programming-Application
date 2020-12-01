@@ -38,26 +38,36 @@ namespace GPLA_Assessment
             this.commandLineWindow = new System.Windows.Forms.TextBox();
             this.programWindow = new System.Windows.Forms.RichTextBox();
             this.displayCanvas = new System.Windows.Forms.PictureBox();
+            this.errorDisplayArea = new System.Windows.Forms.RichTextBox();
+            this.checkSyntaxButton = new System.Windows.Forms.Button();
+            this.displayCanvasLbl = new System.Windows.Forms.Label();
+            this.programWindowLbl = new System.Windows.Forms.Label();
+            this.errorWindowLbl = new System.Windows.Forms.Label();
+            this.commandWindowLbl = new System.Windows.Forms.Label();
+            this.loadProgramFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayCanvas)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(693, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1219, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadProgramFileToolStripMenuItem,
+            this.saveProgramToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
@@ -95,35 +105,111 @@ namespace GPLA_Assessment
             // 
             // commandLineWindow
             // 
-            this.commandLineWindow.Location = new System.Drawing.Point(15, 646);
+            this.commandLineWindow.Location = new System.Drawing.Point(11, 640);
             this.commandLineWindow.Name = "commandLineWindow";
-            this.commandLineWindow.Size = new System.Drawing.Size(666, 26);
+            this.commandLineWindow.Size = new System.Drawing.Size(598, 26);
             this.commandLineWindow.TabIndex = 2;
             this.commandLineWindow.KeyDown += new System.Windows.Forms.KeyEventHandler(this.commandLineWindow_KeyDown);
             // 
             // programWindow
             // 
-            this.programWindow.Location = new System.Drawing.Point(15, 457);
+            this.programWindow.Location = new System.Drawing.Point(11, 467);
             this.programWindow.Name = "programWindow";
-            this.programWindow.Size = new System.Drawing.Size(666, 172);
+            this.programWindow.Size = new System.Drawing.Size(598, 147);
             this.programWindow.TabIndex = 3;
             this.programWindow.Text = "";
             // 
             // displayCanvas
             // 
             this.displayCanvas.BackColor = System.Drawing.Color.White;
-            this.displayCanvas.Location = new System.Drawing.Point(15, 47);
+            this.displayCanvas.Location = new System.Drawing.Point(12, 47);
             this.displayCanvas.Name = "displayCanvas";
-            this.displayCanvas.Size = new System.Drawing.Size(666, 398);
+            this.displayCanvas.Size = new System.Drawing.Size(1192, 407);
             this.displayCanvas.TabIndex = 4;
             this.displayCanvas.TabStop = false;
             this.displayCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.displayCanvas_Paint);
+            // 
+            // errorDisplayArea
+            // 
+            this.errorDisplayArea.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.errorDisplayArea.Location = new System.Drawing.Point(616, 467);
+            this.errorDisplayArea.Name = "errorDisplayArea";
+            this.errorDisplayArea.ReadOnly = true;
+            this.errorDisplayArea.Size = new System.Drawing.Size(588, 199);
+            this.errorDisplayArea.TabIndex = 5;
+            this.errorDisplayArea.Text = "";
+            // 
+            // checkSyntaxButton
+            // 
+            this.checkSyntaxButton.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.checkSyntaxButton.Location = new System.Drawing.Point(463, 581);
+            this.checkSyntaxButton.Name = "checkSyntaxButton";
+            this.checkSyntaxButton.Size = new System.Drawing.Size(146, 33);
+            this.checkSyntaxButton.TabIndex = 6;
+            this.checkSyntaxButton.Text = "Check Syntax";
+            this.checkSyntaxButton.UseVisualStyleBackColor = false;
+            this.checkSyntaxButton.Click += new System.EventHandler(this.checkSyntaxButton_Click);
+            // 
+            // displayCanvasLbl
+            // 
+            this.displayCanvasLbl.AutoSize = true;
+            this.displayCanvasLbl.Location = new System.Drawing.Point(563, 33);
+            this.displayCanvasLbl.Name = "displayCanvasLbl";
+            this.displayCanvasLbl.Size = new System.Drawing.Size(117, 20);
+            this.displayCanvasLbl.TabIndex = 7;
+            this.displayCanvasLbl.Text = "Display Canvas";
+            // 
+            // programWindowLbl
+            // 
+            this.programWindowLbl.AutoSize = true;
+            this.programWindowLbl.Location = new System.Drawing.Point(469, 457);
+            this.programWindowLbl.Name = "programWindowLbl";
+            this.programWindowLbl.Size = new System.Drawing.Size(129, 20);
+            this.programWindowLbl.TabIndex = 8;
+            this.programWindowLbl.Text = "Program Window";
+            // 
+            // errorWindowLbl
+            // 
+            this.errorWindowLbl.AutoSize = true;
+            this.errorWindowLbl.Location = new System.Drawing.Point(1090, 457);
+            this.errorWindowLbl.Name = "errorWindowLbl";
+            this.errorWindowLbl.Size = new System.Drawing.Size(104, 20);
+            this.errorWindowLbl.TabIndex = 9;
+            this.errorWindowLbl.Text = "Error Window";
+            // 
+            // commandWindowLbl
+            // 
+            this.commandWindowLbl.AutoSize = true;
+            this.commandWindowLbl.Location = new System.Drawing.Point(422, 631);
+            this.commandWindowLbl.Name = "commandWindowLbl";
+            this.commandWindowLbl.Size = new System.Drawing.Size(176, 20);
+            this.commandWindowLbl.TabIndex = 10;
+            this.commandWindowLbl.Text = "Command Line Window";
+            // 
+            // loadProgramFileToolStripMenuItem
+            // 
+            this.loadProgramFileToolStripMenuItem.Name = "loadProgramFileToolStripMenuItem";
+            this.loadProgramFileToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.loadProgramFileToolStripMenuItem.Text = "Load Program File";
+            // 
+            // saveProgramToolStripMenuItem
+            // 
+            this.saveProgramToolStripMenuItem.Name = "saveProgramToolStripMenuItem";
+            this.saveProgramToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveProgramToolStripMenuItem.Text = "Save Program";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(693, 685);
+            this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.ClientSize = new System.Drawing.Size(1219, 681);
+            this.Controls.Add(this.commandWindowLbl);
+            this.Controls.Add(this.errorWindowLbl);
+            this.Controls.Add(this.programWindowLbl);
+            this.Controls.Add(this.displayCanvasLbl);
+            this.Controls.Add(this.checkSyntaxButton);
+            this.Controls.Add(this.errorDisplayArea);
             this.Controls.Add(this.displayCanvas);
             this.Controls.Add(this.programWindow);
             this.Controls.Add(this.commandLineWindow);
@@ -150,6 +236,14 @@ namespace GPLA_Assessment
         private System.Windows.Forms.TextBox commandLineWindow;
         private System.Windows.Forms.RichTextBox programWindow;
         private System.Windows.Forms.PictureBox displayCanvas;
+        private System.Windows.Forms.RichTextBox errorDisplayArea;
+        private System.Windows.Forms.Button checkSyntaxButton;
+        private System.Windows.Forms.Label displayCanvasLbl;
+        private System.Windows.Forms.Label programWindowLbl;
+        private System.Windows.Forms.Label errorWindowLbl;
+        private System.Windows.Forms.Label commandWindowLbl;
+        private System.Windows.Forms.ToolStripMenuItem loadProgramFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveProgramToolStripMenuItem;
     }
 }
 

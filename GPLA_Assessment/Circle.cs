@@ -32,9 +32,9 @@ namespace GPLA_Assessment
             if (fill == true)
             {
                 SolidBrush brush = new SolidBrush(penColor);
-                g.FillEllipse(brush, pointX, pointY, radius*2, radius*2);
+                g.FillEllipse(brush, pointX - radius, pointY - radius, radius*2, radius*2);
             }
-            g.DrawEllipse(pen, pointX, pointY, radius*2, radius*2);
+            g.DrawEllipse(pen, pointX-radius, pointY-radius, radius*2, radius*2);
         }
     }
 }

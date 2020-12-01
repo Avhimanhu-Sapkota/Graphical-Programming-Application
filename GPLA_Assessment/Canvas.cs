@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GPLA_Assessment
 {
@@ -14,6 +15,13 @@ namespace GPLA_Assessment
         Graphics g;
         Pen pen = new Pen(Color.Black, 1);
         int pointX, pointY;
+        public ArrayList errorList = new ArrayList();
+
+        public void clearErrorList()
+        {
+            errorList.Clear();
+        }
+        
 
         Shape newShape;
         ShapeIdentifier identiferObject = new ShapeIdentifier();
@@ -76,92 +84,150 @@ namespace GPLA_Assessment
             newShape.draw(g);
         }
 
-        public void programReader(String enteredCode)
+        public void programReader(String enteredCode, int lineCounter)
         {
             if (enteredCode.Equals("triangle"))
             {
                 enteredCode = enteredCode + " 1";
             }
-
-            String[] codeSplitter = enteredCode.Split(' ');
-            String command = codeSplitter[0];
-            String parameters = codeSplitter[1];
-
-            if (command.Equals("pen"))
+            try
             {
-                if (parameters.Equals("red"))
-                    penColor = Color.Red;
+                String[] codeSplitter = enteredCode.Split(' ');
+                String command = codeSplitter[0];
+                String parameters = codeSplitter[1];
 
-                else if (parameters.Equals("blue"))
-                    penColor = Color.Blue;
+                if (command.Equals("pen"))
+                {
+                    if (parameters.Equals("red"))
+                        penColor = Color.Red;
 
-                else if (parameters.Equals("yellow"))
-                    penColor = Color.Yellow;
+                    else if (parameters.Equals("blue"))
+                        penColor = Color.Blue;
 
-                else if (parameters.Equals("green"))
-                    penColor = Color.Green;
+                    else if (parameters.Equals("yellow"))
+                        penColor = Color.Yellow;
+
+                    else if (parameters.Equals("green"))
+                        penColor = Color.Green;
+
+                    else
+                    {
+                        penColor = Color.Black;
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter a valid color - 'red', 'blue', 'yellow' or 'green'" );
+                    }
+                }
+
+                else if (command.Equals("fill"))
+                {
+                    if (parameters.Equals("on"))
+                        fill = true;
+
+                    else if (parameters.Equals("off"))
+                        fill = false;
+
+                    else
+                    {
+                        fill = false;
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter valid parameter - 'on' or 'off'");
+                    }
+
+                }
+
+                else if (command.Equals("triangle"))
+                {
+                    DrawTriangle(penColor, fill);
+                }
+
+                else if (command.Equals("circle"))
+                {
+                    try
+                    {
+                        int radius = Convert.ToInt32(parameters);
+                        DrawCircle(penColor, fill, radius);
+                    }
+                    catch (FormatException)
+                    {
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Numeric Value for Radius.");
+                    }
+
+                }
+
+                else if (command.Equals("moveto"))
+                {
+                    try
+                    {
+                        String[] parameterSplitter = parameters.Split(',');
+
+                        int parameter1 = Convert.ToInt32(parameterSplitter[0]);
+                        int parameter2 = Convert.ToInt32(parameterSplitter[1]);
+                        MoveTo(parameter1, parameter2);
+                    }
+                    catch (FormatException)
+                    {
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Numeric Value for coordinates.");
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Two Numeric Values for coordinates.");
+                    }
+                }
+
+                else if (command.Equals("drawto"))
+                {
+                    try
+                    {
+                        String[] parameterSplitter = parameters.Split(',');
+                        int parameter1 = Convert.ToInt32(parameterSplitter[0]);
+                        int parameter2 = Convert.ToInt32(parameterSplitter[1]);
+
+                        DrawLine(penColor, parameter1, parameter2);
+                    }
+                    catch (FormatException)
+                    {
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Numeric Value for coordinates.");
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Two Numeric Values for coordinates.");
+                    }
+                }
+
+                else if (command.Equals("rectangle"))
+                {
+                    try
+                    {
+                        String[] parameterSplitter = parameters.Split(',');
+                        int parameter1 = Convert.ToInt32(parameterSplitter[0]);
+                        int parameter2 = Convert.ToInt32(parameterSplitter[1]);
+
+                        DrawRectangle(penColor, fill, parameter1, parameter2);
+                    }
+                    catch (FormatException)
+                    {
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Numeric Value for length and breadth.");
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Two Numeric Values for length and breadth.");
+                    }
+                }
 
                 else
                 {
-                    penColor = Color.Black;
-                    // Generate Error !!! -- This color is not available.!!!!!!!!!!!!!!!!!!
+                    errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Valid Command.");
                 }
             }
-
-            else if (command.Equals("fill"))
+            catch (IndexOutOfRangeException)
             {
-                if (parameters.Equals("on"))
-                    fill = true;
-
-                else if (parameters.Equals("off"))
-                    fill = false;
-
-                else
-                {
-                    fill = false;
-                    // Generate Error !!!!! -  Not valid instruction. !!!!!!!!!!!!!!!!!!!!!!!!
-                }
-
+                errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Valid Command.");
             }
 
-            else if (command.Equals("triangle"))
+            if (errorList.Count > 0)
             {
-                DrawTriangle(penColor, fill);
-            }
-
-            else if (command.Equals("circle"))
-            {
-                int radius = Convert.ToInt32(parameters);
-                DrawCircle(penColor, fill, radius);
-            }
-
-            else if (command.Equals("moveto"))
-            {
-                String[] parameterSplitter = parameters.Split(',');
-                int parameter1 = Convert.ToInt32(parameterSplitter[0]);
-                int parameter2 = Convert.ToInt32(parameterSplitter[1]);
-
-                MoveTo(parameter1, parameter2);
-            }
-
-            else if (command.Equals("drawto"))
-            {
-                String[] parameterSplitter = parameters.Split(',');
-                int parameter1 = Convert.ToInt32(parameterSplitter[0]);
-                int parameter2 = Convert.ToInt32(parameterSplitter[1]);
-
-                DrawLine(penColor, parameter1, parameter2);
-            }
-
-            else if (command.Equals("rectangle"))
-            {
-                String[] parameterSplitter = parameters.Split(',');
-                int parameter1 = Convert.ToInt32(parameterSplitter[0]);
-                int parameter2 = Convert.ToInt32(parameterSplitter[1]);
-
-                DrawRectangle(penColor, fill, parameter1, parameter2);
+                g.Clear(Color.White);
             }
 
         }
+
     }
 }

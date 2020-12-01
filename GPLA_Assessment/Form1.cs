@@ -108,15 +108,17 @@ namespace GPLA_Assessment
             else if (code.Equals("run"))
             {
                 string[] multilineCodes = programWindow.Lines;
+                int index = 1;
                 foreach (string line in multilineCodes)
                 {
-                    canvasObject.programReader(line);
+                    int counter = index++;
+                    canvasObject.programReader(line, counter);
                 }
             }
 
-            else
+            else 
             {
-                canvasObject.programReader(code);
+                canvasObject.programReader(code, 1);
             }
             
             
@@ -126,24 +128,55 @@ namespace GPLA_Assessment
         {
             if (e.KeyCode == Keys.Enter)
             {
+                errorDisplayArea.Text = "";
+                errorDisplayArea.ForeColor = Color.Red;
+                canvasObject.clearErrorList();
+
                 String command = commandLineWindow.Text;
                 command = command.Trim().ToLower();
                 programReader(command);
+                foreach (string eachError in canvasObject.errorList)
+                {
+                    errorDisplayArea.AppendText(eachError + "\n\n");
+                }
+
                 commandLineWindow.Text = "";
                 Refresh();
                 
             }
         }
 
-        
-        
-
-    private void displayCanvas_Paint(object sender, PaintEventArgs e)
+        private void displayCanvas_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.DrawImageUnscaled(bitmapCanvas, 0, 0);
+
         }
 
+        private void checkSyntaxButton_Click(object sender, EventArgs e)
+        {
+            errorDisplayArea.Text = "";
+            errorDisplayArea.ForeColor = Color.Red;
+            canvasObject.clearErrorList();
 
+            string[] multilineCodes = programWindow.Lines;
+            int index = 1;
+            foreach (string line in multilineCodes)
+            {
+                int counter = index++;
+                canvasObject.programReader(line, counter);
+            }
+
+            foreach (string eachError in canvasObject.errorList)
+            {
+                errorDisplayArea.AppendText(eachError + "\n\n");
+            }
+
+            if(canvasObject.errorList.Count == 0)
+            {
+                errorDisplayArea.ForeColor = Color.Green;
+                errorDisplayArea.AppendText("The program does not have any Error!! \nYou may proceed with Run command.");
+            }
+        }
     }
 }
