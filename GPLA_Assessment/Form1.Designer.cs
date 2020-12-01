@@ -31,7 +31,7 @@ namespace GPLA_Assessment
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userGuidelinesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,8 +44,8 @@ namespace GPLA_Assessment
             this.programWindowLbl = new System.Windows.Forms.Label();
             this.errorWindowLbl = new System.Windows.Forms.Label();
             this.commandWindowLbl = new System.Windows.Forms.Label();
-            this.loadProgramFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadProgramMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProgramMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayCanvas)).BeginInit();
             this.SuspendLayout();
@@ -53,6 +53,7 @@ namespace GPLA_Assessment
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -66,19 +67,19 @@ namespace GPLA_Assessment
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadProgramFileToolStripMenuItem,
-            this.saveProgramToolStripMenuItem,
-            this.exitToolStripMenuItem});
+            this.loadProgramMenu,
+            this.saveProgramMenu,
+            this.exitMenu});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // exitToolStripMenuItem
+            // exitMenu
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(141, 34);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitMenu.Name = "exitMenu";
+            this.exitMenu.Size = new System.Drawing.Size(270, 34);
+            this.exitMenu.Text = "Exit";
+            this.exitMenu.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -186,17 +187,19 @@ namespace GPLA_Assessment
             this.commandWindowLbl.TabIndex = 10;
             this.commandWindowLbl.Text = "Command Line Window";
             // 
-            // loadProgramFileToolStripMenuItem
+            // loadProgramMenu
             // 
-            this.loadProgramFileToolStripMenuItem.Name = "loadProgramFileToolStripMenuItem";
-            this.loadProgramFileToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.loadProgramFileToolStripMenuItem.Text = "Load Program File";
+            this.loadProgramMenu.Name = "loadProgramMenu";
+            this.loadProgramMenu.Size = new System.Drawing.Size(270, 34);
+            this.loadProgramMenu.Text = "Load Program File";
+            this.loadProgramMenu.Click += new System.EventHandler(this.loadProgramMenu_Click);
             // 
-            // saveProgramToolStripMenuItem
+            // saveProgramMenu
             // 
-            this.saveProgramToolStripMenuItem.Name = "saveProgramToolStripMenuItem";
-            this.saveProgramToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.saveProgramToolStripMenuItem.Text = "Save Program";
+            this.saveProgramMenu.Name = "saveProgramMenu";
+            this.saveProgramMenu.Size = new System.Drawing.Size(270, 34);
+            this.saveProgramMenu.Text = "Save Program";
+            this.saveProgramMenu.Click += new System.EventHandler(this.saveProgramMenu_Click);
             // 
             // Form1
             // 
@@ -229,7 +232,7 @@ namespace GPLA_Assessment
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitMenu;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userGuidelinesToolStripMenuItem;
@@ -242,8 +245,8 @@ namespace GPLA_Assessment
         private System.Windows.Forms.Label programWindowLbl;
         private System.Windows.Forms.Label errorWindowLbl;
         private System.Windows.Forms.Label commandWindowLbl;
-        private System.Windows.Forms.ToolStripMenuItem loadProgramFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveProgramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadProgramMenu;
+        private System.Windows.Forms.ToolStripMenuItem saveProgramMenu;
     }
 }
 

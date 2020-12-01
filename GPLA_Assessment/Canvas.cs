@@ -50,7 +50,6 @@ namespace GPLA_Assessment
 
         public void ResetPen()
         {
-            pen.Color = Color.Black;
             pointX = 0;
             pointY = 0;
         }
