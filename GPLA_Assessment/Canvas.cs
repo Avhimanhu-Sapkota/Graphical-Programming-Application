@@ -69,6 +69,27 @@ namespace GPLA_Assessment
         public Color penColor;
 
         /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public Canvas()
+        {
+            TextBox t = new TextBox();
+            this.g = t.CreateGraphics();
+
+            // Sets the initial value of x-coordinate to 0
+            pointX = 0;
+
+            // Sets the initial value of Y-coordinate to 0
+            pointY = 0;
+
+            // Sets the default color of pen to Black
+            penColor = Color.Black;
+
+            // Sets the default fill option to false.
+            fill = false;
+        }
+
+        /// <summary>
         /// Method: Sets initial value of (x,y) coordiantes to (0,0). Sets default <see cref="penColor"/>to Black and deault value of <see cref="fill"/> to false/off.
         /// </summary>
         /// <param name="g">Object of <see cref="Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
@@ -223,6 +244,34 @@ namespace GPLA_Assessment
         }
 
         /// <summary>
+        /// Method: Triggered when enteredCode has command and parameters separated by space and are required to be split.
+        /// Splits the command and parameters separated by space as different item and saves them into an array of string.
+        /// </summary>
+        /// <param name="enteredCode"> Holds the string value which contains command and parameters separated by space</param>
+        /// <returns></returns>
+        public String[] CommandSplitter(String enteredCode)
+        {
+            /// Array of strings which stores code, separated by space, as a different item. 
+            String[] splittedCommand = enteredCode.Split(' ');
+
+            return splittedCommand;
+        }
+
+        /// <summary>
+        /// Method: Triggered when parameters has values separated by ',' and are required to be split.
+        /// Splits the parameters separated by ',' as a different item and saves them into an array of string.
+        /// </summary>
+        /// <param name="parameters">Holds the string value of parameters which parameters separated by ',' </param>
+        /// <returns> The string array which contains parameter's separated values as different items.</returns>
+        public String[] ParameterSplitter(String parameters)
+        {
+            /// Array of strings which stores parameters, separated by ',' as a different item.
+            String[] splittedParameter = parameters.Split(',');
+
+            return splittedParameter;
+        }
+
+        /// <summary>
         /// Method Triggered when some text is written in the program Window and run command is pressed.<br/>
         /// Splits the string and stores their value in variables. Checks the string then: Implements <br/><see cref="DrawLine(Color, int, int)"/>, <see cref="DrawRectangle(Color, bool, int, int)"/>
         /// <see cref="DrawCircle(Color, bool, int)"/>, <see cref="DrawTriangle(Color, bool)"/> being based on the conditions. 
@@ -242,14 +291,14 @@ namespace GPLA_Assessment
 
             try
             {
-                /// Array  of strings which stores code, separated by space, as a different item. 
-                String[] codeSplitter = enteredCode.Split(' ');
+                /// Calls method which has Array of strings which stores command and parameters , separated by space as a different item.
+                String[] splittedCommand = CommandSplitter(enteredCode);
 
                 /// Retrieves the first string of the array and stores its string value to string: command
-                String command = codeSplitter[0];
+                String command = splittedCommand[0];
 
                 /// Retrieves the first string of the array and stores its string value to string: command
-                String parameters = codeSplitter[1];
+                String parameters = splittedCommand[1];
 
                 /*
                 * Checks the string written in the String: command and calls appropriate methods accordingly.
@@ -336,14 +385,14 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                        /// Array  of strings which stores parameters, separated by ',' as a different item. 
-                        String[] parameterSplitter = parameters.Split(',');
+                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                        String[] splittedParameters = ParameterSplitter(parameters);
 
                         /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(parameterSplitter[0]);
+                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
 
                         /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(parameterSplitter[1]);
+                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
 
                         // Calls method MoveTo, which changes the current position of cursor, as the command holds the string moveTo
                         MoveTo(parameter1, parameter2);
@@ -366,14 +415,14 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                        /// Array  of strings which stores parameters, separated by ',' as a different item. 
-                        String[] parameterSplitter = parameters.Split(',');
+                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                        String[] splittedParameters = ParameterSplitter(parameters);
 
                         /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(parameterSplitter[0]);
+                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
 
                         /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(parameterSplitter[1]);
+                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
 
                         // Calls method DrawLine, which draws a line, as the command holds the string drawTo
                         DrawLine(penColor, parameter1, parameter2);
@@ -396,14 +445,14 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                        /// Array  of strings which stores parameters, separated by ',' as a different item. 
-                        String[] parameterSplitter = parameters.Split(',');
+                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                        String[] splittedParameters = ParameterSplitter(parameters);
 
                         /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(parameterSplitter[0]);
+                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
 
                         /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(parameterSplitter[1]);
+                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
 
                         // Calls method DrawRectangle, which draws rectangle, as the command holds the string triangle
                         DrawRectangle(penColor, fill, parameter1, parameter2);
@@ -434,14 +483,6 @@ namespace GPLA_Assessment
             {
                 errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Valid Command.");
             }
-
-            /*
-             * Checks if the arrayList: errorList has any value and clears the drawingArea if there are errors.
-            if (errorList.Count > 0)
-            {
-               g.Clear(Color.White);
-            }
-            */
         }
     }
 }

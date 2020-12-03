@@ -137,21 +137,18 @@ namespace GPLA_Assessment
         /// <param name="enteredCode">The command retrieved from the Command Line Window of the application</param>
         public void programReader(String enteredCode)
         {
-            /// Reads the value in the parameter and trims the text and stores in the String variable: code.
-            String code = enteredCode.Trim();
-
             /*
              * Checks the string written in the String: code and calls appropriate methods accordingly.
              */
-            if (code.Equals("clear"))
+            if (enteredCode.Equals("clear"))
                 // Calls clearScreen method of Canvas class which clears the displayCanvas pictureBox of the application
                 canvasObject.ClearScreen();
 
-            else if (code.Equals("reset"))
+            else if (enteredCode.Equals("reset"))
                 // Calls ResetPen method of Canvas class which changes the position of pen to (0,0) coordinates.
                 canvasObject.ResetPen();
             
-            else if (code.Equals("run"))
+            else if (enteredCode.Equals("run"))
             {
                 /// Creates an array of string, retrieves the text from programWindow and stores the lines. 
                 string[] multilineCodes = programWindow.Lines;
@@ -176,7 +173,7 @@ namespace GPLA_Assessment
             else 
             {
                 // Calls programReader method, of Canvas class, and sends the line retrieved and 1 as the parameter.
-                canvasObject.programReader(code, 1);
+                canvasObject.programReader(enteredCode, 1);
             }
         }
 
@@ -277,9 +274,6 @@ namespace GPLA_Assessment
                 // Calls programReader method, of Canvas class, and sends the line retrieved and counter as the parameter.
                 canvasObject.programReader(line, counter);
             }
-
-            // Calls clearScreen method of Canvas class which clears the displayCanvas pictureBox of the application to return to default state after syntax check
-            canvasObject.ClearScreen();
 
             // Calls resetPen method of Canvas class which resets the x and y coordinates of the pen in the displayCanvas pictureBox of the application to return to default state after syntax check
             canvasObject.ResetPen();

@@ -9,7 +9,7 @@ namespace GPLA_Assessment
     /// <summary>
     /// Implements a method which creates and returns the object of the shape being based on the command entered as parameter. 
     /// </summary>
-    class ShapeFactory
+    public class ShapeFactory
     {
         /// <summary>
         /// Method: Triggered when the object of Rectangle/Triangle/Circle class is required. 

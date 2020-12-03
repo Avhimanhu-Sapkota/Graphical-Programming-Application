@@ -10,7 +10,7 @@ namespace GPLA_Assessment
     /// <summary>
     /// Receives values of shapes, then sets color, fill, and other parameters of that particular shape then<br/> calls a method which helps to draw that particular shape.
     /// </summary>
-    abstract class Shape
+    public abstract class Shape
     {
         /// <summary>
         /// Stores the name of <see cref="Color"/> which will be used in pen to draw objects of different colors.
@@ -40,6 +40,25 @@ namespace GPLA_Assessment
         public Shape()
         {
             
+        }
+
+        /// <summary>
+        ///  Refers the value of 'pointX' to the current object of the method to set its current value
+        /// </summary>
+        /// <param name="pointX"> Holds the value of the current position of x-coordinate </param>
+        public void setX(int pointX)
+        {
+            // Refers the value of 'pointX' to the current object of the method
+            this.pointX = pointX;
+        }
+
+        /// <summary>
+        /// Gets the current value of x-coordinate from the user and returns its value.
+        /// </summary>
+        /// <returns> The current value of the current position of x-coordinates</returns>
+        public int getX()
+        {
+            return this.pointX;
         }
 
         /// <summary>
