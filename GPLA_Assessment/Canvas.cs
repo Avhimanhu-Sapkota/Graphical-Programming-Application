@@ -420,14 +420,14 @@ namespace GPLA_Assessment
                 {
                     try
                     {
+                        
+                        // Retrieves the value of parameters, converts it to Integer and stores to radius variable.
+                        int radius = Convert.ToInt32(parameters);
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
                          */
                         if (!syntaxButton)
                         {
-                            // Retrieves the value of parameters, converts it to Integer and stores to radius variable.
-                            int radius = Convert.ToInt32(parameters);
-
                             // Calls method DrawCircle, which draws circle, as the command holds the string triangle
                             DrawCircle(penColor, fill, radius);
                         }
@@ -444,20 +444,19 @@ namespace GPLA_Assessment
                 {
                     try
                     {
+                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                        String[] splittedParameters = ParameterSplitter(parameters);
+
+                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+
+                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
+                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
                          */
                         if (!syntaxButton)
                         {
-                            /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
-                            String[] splittedParameters = ParameterSplitter(parameters);
-
-                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                            int parameter1 = Convert.ToInt32(splittedParameters[0]);
-
-                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                            int parameter2 = Convert.ToInt32(splittedParameters[1]);
-
                             // Calls method MoveTo, which changes the current position of cursor, as the command holds the string moveTo
                             MoveTo(parameter1, parameter2);
                         }
@@ -480,20 +479,20 @@ namespace GPLA_Assessment
                 {
                     try
                     {
+                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                        String[] splittedParameters = ParameterSplitter(parameters);
+
+                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+
+                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
+                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
                          */
                         if (!syntaxButton)
                         {
-                            /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
-                            String[] splittedParameters = ParameterSplitter(parameters);
-
-                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                            int parameter1 = Convert.ToInt32(splittedParameters[0]);
-
-                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                            int parameter2 = Convert.ToInt32(splittedParameters[1]);
-
                             // Calls method DrawLine, which draws a line, as the command holds the string drawTo
                             DrawLine(penColor, parameter1, parameter2);
                         }
@@ -516,20 +515,20 @@ namespace GPLA_Assessment
                 {
                     try
                     {
+                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                        String[] splittedParameters = ParameterSplitter(parameters);
+
+                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+
+                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
+                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
                          */
                         if (!syntaxButton)
                         {
-                            /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
-                            String[] splittedParameters = ParameterSplitter(parameters);
-
-                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                            int parameter1 = Convert.ToInt32(splittedParameters[0]);
-
-                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                            int parameter2 = Convert.ToInt32(splittedParameters[1]);
-
                             // Calls method DrawRectangle, which draws rectangle, as the command holds the string triangle
                             DrawRectangle(penColor, fill, parameter1, parameter2);
                         }
