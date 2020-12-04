@@ -278,7 +278,8 @@ namespace GPLA_Assessment
         /// </summary>
         /// <param name="enteredCode">Holds each line of command retrieved from the program Window of the application</param>
         /// <param name="lineCounter">Holds the number of line of the text</param>
-        public void programReader(String enteredCode, int lineCounter)
+        /// <param name="syntaxButton">Holds the boolean value of syntaxButton which confirms if syntaxButton was pressed in the application</param>
+        public void programReader(String enteredCode, int lineCounter, bool syntaxButton)
         {
             /*
              * Checks if the enteredCode is triangle and concatenates " 1" so that it will avoid errors when the code is later splitted.
@@ -309,20 +310,52 @@ namespace GPLA_Assessment
                     * Checks the string written in the String: parameters and performs tasks underneath accordingly.
                     */
                     if (parameters.Equals("red"))
-                        // Sets the color of pen to red as the parameter holds the string red.
-                        penColor = Color.Red;
+                    {
+                        /*
+                         * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                         */
+                        if (!syntaxButton)
+                        {
+                            // Sets the color of pen to red as the parameter holds the string red.
+                            penColor = Color.Red;
+                        }
+                    }
 
                     else if (parameters.Equals("blue"))
-                        // Sets the color of pen to blue as the parameter holds the string blue.
-                        penColor = Color.Blue;
+                    {
+                        /*
+                        * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                        */
+                        if (!syntaxButton)
+                        {
+                            // Sets the color of pen to blue as the parameter holds the string blue.
+                            penColor = Color.Blue;
+                        }
+                    }
 
                     else if (parameters.Equals("yellow"))
-                        // Sets the color of pen to yellow as the parameter holds the string yellow.
-                        penColor = Color.Yellow;
+                    {
+                        /*
+                        * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                        */
+                        if (!syntaxButton)
+                        {
+                            // Sets the color of pen to yellow as the parameter holds the string yellow.
+                            penColor = Color.Yellow;
+                        }
+                    }
 
                     else if (parameters.Equals("green"))
-                        // Sets the color of pen to green as the parameter holds the string green.
-                        penColor = Color.Green;
+                    {
+                        /*
+                        * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                        */
+                        if (!syntaxButton)
+                        {
+                            // Sets the color of pen to green as the parameter holds the string green.
+                            penColor = Color.Green;
+                        }
+                    }
 
                     else
                     {
@@ -330,7 +363,7 @@ namespace GPLA_Assessment
                         penColor = Color.Black;
 
                         // Calls a method which adds the specified string in the arrayList errorList.
-                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter a valid color - 'red', 'blue', 'yellow' or 'green'" );
+                        errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter a valid color - 'red', 'blue', 'yellow' or 'green'");
                     }
                 }
 
@@ -340,13 +373,27 @@ namespace GPLA_Assessment
                     * Checks the string written in the String: parameters and performs tasks underneath accordingly.
                     */
                     if (parameters.Equals("on"))
-                        // Sets the boolean value of fill to true as the parameter holds the string on.
-                        fill = true;
-
+                    {
+                        /*
+                        * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                        */
+                        if (!syntaxButton)
+                        {
+                            // Sets the boolean value of fill to true as the parameter holds the string on.
+                            fill = true;
+                        }
+                    }
                     else if (parameters.Equals("off"))
-                        // Sets the boolean value of fill to false as the parameter holds the string off. 
-                        fill = false;
-
+                    {
+                        /*
+                        * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                        */
+                        if (!syntaxButton)
+                        {
+                            // Sets the boolean value of fill to false as the parameter holds the string off. 
+                            fill = false;
+                        }
+                    }
                     else
                     {
                         // Sets the boolean value of fill to false which is default as none of the condition above is true.
@@ -359,19 +406,31 @@ namespace GPLA_Assessment
 
                 else if (command.Equals("triangle"))
                 {
-                    // Calls method DrawTriangle, which draws triangle, as the command holds string triangle.
-                    DrawTriangle(penColor, fill);
+                   /*
+                    * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                    */
+                    if (!syntaxButton)
+                    {
+                        // Calls method DrawTriangle, which draws triangle, as the command holds string triangle.
+                        DrawTriangle(penColor, fill);
+                    }
                 }
 
                 else if (command.Equals("circle"))
                 {
                     try
                     {
-                        // Retrieves the value of parameters, converts it to Integer and stores to radius variable.
-                        int radius = Convert.ToInt32(parameters);
+                        /*
+                         * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                         */
+                        if (!syntaxButton)
+                        {
+                            // Retrieves the value of parameters, converts it to Integer and stores to radius variable.
+                            int radius = Convert.ToInt32(parameters);
 
-                        // Calls method DrawCircle, which draws circle, as the command holds the string triangle
-                        DrawCircle(penColor, fill, radius);
+                            // Calls method DrawCircle, which draws circle, as the command holds the string triangle
+                            DrawCircle(penColor, fill, radius);
+                        }
                     }
                     // Catches error if non-numeric value is detected in the variable: parameters. 
                     catch (FormatException)
@@ -385,17 +444,23 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
-                        String[] splittedParameters = ParameterSplitter(parameters);
+                        /*
+                         * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                         */
+                        if (!syntaxButton)
+                        {
+                            /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                            String[] splittedParameters = ParameterSplitter(parameters);
 
-                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                            int parameter1 = Convert.ToInt32(splittedParameters[0]);
 
-                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
+                            int parameter2 = Convert.ToInt32(splittedParameters[1]);
 
-                        // Calls method MoveTo, which changes the current position of cursor, as the command holds the string moveTo
-                        MoveTo(parameter1, parameter2);
+                            // Calls method MoveTo, which changes the current position of cursor, as the command holds the string moveTo
+                            MoveTo(parameter1, parameter2);
+                        }
                     }
                     // Catches error if non-numeric value is detected in the variable: parameters. 
                     catch (FormatException)
@@ -415,17 +480,23 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
-                        String[] splittedParameters = ParameterSplitter(parameters);
+                        /*
+                         * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                         */
+                        if (!syntaxButton)
+                        {
+                            /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                            String[] splittedParameters = ParameterSplitter(parameters);
 
-                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                            int parameter1 = Convert.ToInt32(splittedParameters[0]);
 
-                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
+                            int parameter2 = Convert.ToInt32(splittedParameters[1]);
 
-                        // Calls method DrawLine, which draws a line, as the command holds the string drawTo
-                        DrawLine(penColor, parameter1, parameter2);
+                            // Calls method DrawLine, which draws a line, as the command holds the string drawTo
+                            DrawLine(penColor, parameter1, parameter2);
+                        }
                     }
                     // Catches error if non-numeric value is detected in the variable: parameters. 
                     catch (FormatException)
@@ -445,17 +516,23 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                        /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
-                        String[] splittedParameters = ParameterSplitter(parameters);
+                        /*
+                         * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                         */
+                        if (!syntaxButton)
+                        {
+                            /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                            String[] splittedParameters = ParameterSplitter(parameters);
 
-                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                            int parameter1 = Convert.ToInt32(splittedParameters[0]);
 
-                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
+                            int parameter2 = Convert.ToInt32(splittedParameters[1]);
 
-                        // Calls method DrawRectangle, which draws rectangle, as the command holds the string triangle
-                        DrawRectangle(penColor, fill, parameter1, parameter2);
+                            // Calls method DrawRectangle, which draws rectangle, as the command holds the string triangle
+                            DrawRectangle(penColor, fill, parameter1, parameter2);
+                        }
                     }
                     // Catches error if non-numeric value is detected in the variable: parameters. 
                     catch (FormatException)

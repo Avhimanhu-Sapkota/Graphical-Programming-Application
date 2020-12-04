@@ -111,8 +111,8 @@ namespace GPLA_Unit_Test
             // Object of Canvas class to access methods of Canvas Class.
             Canvas testCanvasObject = new Canvas();
 
-            // Calls programReader method by passing 'pen red' and '1' as parameters which is supposed to change the color of pen to 'Red'
-            testCanvasObject.programReader("pen red", 1);
+            // Calls programReader method by passing 'pen red', '1' and 'false' as parameters which is supposed to change the color of pen to 'Red'
+            testCanvasObject.programReader("pen red", 1, false);
 
             // Performs Unit Tests on areEqual tests using retrieved color of pen and expected color.
             Assert.AreEqual(testCanvasObject.penColor, expectedColor);
@@ -131,8 +131,8 @@ namespace GPLA_Unit_Test
             // Object of Canvas class to access methods of Canvas Class.
             Canvas testCanvasObject = new Canvas();
 
-            // Calls programReader method by passing 'fill on' and '1' as parameters which is supposed to change the boolean value of fill to 'true'
-            testCanvasObject.programReader("fill on", 1);
+            // Calls programReader method by passing 'fill on', '1' and 'false' as parameters which is supposed to change the boolean value of fill to 'true'
+            testCanvasObject.programReader("fill on", 1, false);
 
             // Performs Unit Tests on areEqual tests using retrieved boolean value and expected boolean value.
             Assert.AreEqual(testCanvasObject.fill, expectedOutput);

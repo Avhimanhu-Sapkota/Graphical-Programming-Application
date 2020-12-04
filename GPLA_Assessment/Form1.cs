@@ -34,6 +34,11 @@ namespace GPLA_Assessment
         Canvas canvasObject;
 
         /// <summary>
+        /// Stores boolean value. This is turned on while syntaxButton is pressed and turned off when the programWindow is error free.
+        /// </summary>
+        bool syntaxButton = false;
+
+        /// <summary>
         /// Default Constructor: Initializes components which displays the Form and Graphical contents of the application.
         /// </summary>
         public Form1()
@@ -165,15 +170,15 @@ namespace GPLA_Assessment
                     // Increases index every time the line is changed (the loop is iterated).
                     int counter = index++;
 
-                    // Calls programReader method, of Canvas class, and sends the line retrieved and counter as the parameter.
-                    canvasObject.programReader(line, counter);
+                    // Calls programReader method, of Canvas class, and sends the line retrieved, counter and syntaxButton's boolean value as the parameter.
+                    canvasObject.programReader(line, counter, syntaxButton);
                 }
             }
 
             else 
             {
-                // Calls programReader method, of Canvas class, and sends the line retrieved and 1 as the parameter.
-                canvasObject.programReader(enteredCode, 1);
+                // Calls programReader method, of Canvas class, and sends the line retrieved, 1 and syntaxButton's boolean value as the parameter.
+                canvasObject.programReader(enteredCode, 1, syntaxButton);
             }
         }
 
@@ -247,6 +252,9 @@ namespace GPLA_Assessment
         /// <param name="e">Handles events that are to be performed in the application when Check Syntax button is clicked in the application. </param>
         private void checkSyntaxButton_Click(object sender, EventArgs e)
         {
+            // Changes the boolean value of syntaxButton to 'true' which checks if the button was pressed.
+            syntaxButton = true;
+
             // Sets the text of errorDisplayArea to null so that it does not repeat previously presented Error Messages.
             errorDisplayArea.Text = "";
 
@@ -271,12 +279,15 @@ namespace GPLA_Assessment
                 // Increases index every time the line is changed (the loop is iterated).
                 int counter = index++;
 
-                // Calls programReader method, of Canvas class, and sends the line retrieved and counter as the parameter.
-                canvasObject.programReader(line, counter);
+                // Calls programReader method, of Canvas class, and sends the line retrieved, counter and syntaxButton's boolean value as the parameter.
+                canvasObject.programReader(line, counter, syntaxButton);
             }
 
             // Calls resetPen method of Canvas class which resets the x and y coordinates of the pen in the displayCanvas pictureBox of the application to return to default state after syntax check
             canvasObject.ResetPen();
+
+            // Calls resetPen method of Canvas class
+            // canvasObject.ClearScreen();
 
             // Changes the color of the pen to black to return to default after syntax check
             canvasObject.penColor = Color.Black;
@@ -304,8 +315,10 @@ namespace GPLA_Assessment
                 // Appends the message to proceed to errorDisplayArea of the application.
                 errorDisplayArea.AppendText("The program does not have any Error!! \nYou may proceed with Run command.");
 
-                Refresh();
             }
+
+            // Changes the boolean value of syntaxButton to 'false' as all the tasks to be performed by syntaxButton has been already done. 
+            syntaxButton = false;
         }
 
         /// <summary>
