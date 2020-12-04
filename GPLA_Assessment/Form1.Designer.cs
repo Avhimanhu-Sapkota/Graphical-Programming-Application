@@ -60,7 +60,7 @@ namespace GPLA_Assessment
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1216, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1305, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -107,30 +107,30 @@ namespace GPLA_Assessment
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(235, 34);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // userGuidelinesToolStripMenuItem
             // 
             this.userGuidelinesToolStripMenuItem.Name = "userGuidelinesToolStripMenuItem";
-            this.userGuidelinesToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.userGuidelinesToolStripMenuItem.Size = new System.Drawing.Size(235, 34);
             this.userGuidelinesToolStripMenuItem.Text = "User Guidelines";
             this.userGuidelinesToolStripMenuItem.Click += new System.EventHandler(this.userGuidelinesToolStripMenuItem_Click);
             // 
             // commandLineWindow
             // 
-            this.commandLineWindow.Location = new System.Drawing.Point(616, 419);
+            this.commandLineWindow.Location = new System.Drawing.Point(768, 419);
             this.commandLineWindow.Name = "commandLineWindow";
-            this.commandLineWindow.Size = new System.Drawing.Size(588, 26);
+            this.commandLineWindow.Size = new System.Drawing.Size(525, 26);
             this.commandLineWindow.TabIndex = 2;
             this.commandLineWindow.KeyDown += new System.Windows.Forms.KeyEventHandler(this.commandLineWindow_KeyDown);
             // 
             // programWindow
             // 
-            this.programWindow.Location = new System.Drawing.Point(616, 47);
+            this.programWindow.Location = new System.Drawing.Point(768, 47);
             this.programWindow.Name = "programWindow";
-            this.programWindow.Size = new System.Drawing.Size(588, 347);
+            this.programWindow.Size = new System.Drawing.Size(525, 347);
             this.programWindow.TabIndex = 3;
             this.programWindow.Text = "";
             // 
@@ -139,7 +139,7 @@ namespace GPLA_Assessment
             this.displayCanvas.BackColor = System.Drawing.Color.White;
             this.displayCanvas.Location = new System.Drawing.Point(12, 47);
             this.displayCanvas.Name = "displayCanvas";
-            this.displayCanvas.Size = new System.Drawing.Size(597, 620);
+            this.displayCanvas.Size = new System.Drawing.Size(750, 620);
             this.displayCanvas.TabIndex = 4;
             this.displayCanvas.TabStop = false;
             this.displayCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.displayCanvas_Paint);
@@ -147,17 +147,17 @@ namespace GPLA_Assessment
             // errorDisplayArea
             // 
             this.errorDisplayArea.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.errorDisplayArea.Location = new System.Drawing.Point(616, 467);
+            this.errorDisplayArea.Location = new System.Drawing.Point(768, 467);
             this.errorDisplayArea.Name = "errorDisplayArea";
             this.errorDisplayArea.ReadOnly = true;
-            this.errorDisplayArea.Size = new System.Drawing.Size(588, 200);
+            this.errorDisplayArea.Size = new System.Drawing.Size(525, 200);
             this.errorDisplayArea.TabIndex = 5;
             this.errorDisplayArea.Text = "";
             // 
             // checkSyntaxButton
             // 
             this.checkSyntaxButton.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.checkSyntaxButton.Location = new System.Drawing.Point(1058, 361);
+            this.checkSyntaxButton.Location = new System.Drawing.Point(1147, 361);
             this.checkSyntaxButton.Name = "checkSyntaxButton";
             this.checkSyntaxButton.Size = new System.Drawing.Size(146, 33);
             this.checkSyntaxButton.TabIndex = 6;
@@ -168,7 +168,7 @@ namespace GPLA_Assessment
             // displayCanvasLbl
             // 
             this.displayCanvasLbl.AutoSize = true;
-            this.displayCanvasLbl.Location = new System.Drawing.Point(236, 33);
+            this.displayCanvasLbl.Location = new System.Drawing.Point(334, 33);
             this.displayCanvasLbl.Name = "displayCanvasLbl";
             this.displayCanvasLbl.Size = new System.Drawing.Size(117, 20);
             this.displayCanvasLbl.TabIndex = 7;
@@ -177,7 +177,7 @@ namespace GPLA_Assessment
             // programWindowLbl
             // 
             this.programWindowLbl.AutoSize = true;
-            this.programWindowLbl.Location = new System.Drawing.Point(1065, 33);
+            this.programWindowLbl.Location = new System.Drawing.Point(1154, 33);
             this.programWindowLbl.Name = "programWindowLbl";
             this.programWindowLbl.Size = new System.Drawing.Size(129, 20);
             this.programWindowLbl.TabIndex = 8;
@@ -186,7 +186,7 @@ namespace GPLA_Assessment
             // errorWindowLbl
             // 
             this.errorWindowLbl.AutoSize = true;
-            this.errorWindowLbl.Location = new System.Drawing.Point(1090, 457);
+            this.errorWindowLbl.Location = new System.Drawing.Point(1179, 457);
             this.errorWindowLbl.Name = "errorWindowLbl";
             this.errorWindowLbl.Size = new System.Drawing.Size(104, 20);
             this.errorWindowLbl.TabIndex = 9;
@@ -195,7 +195,7 @@ namespace GPLA_Assessment
             // commandWindowLbl
             // 
             this.commandWindowLbl.AutoSize = true;
-            this.commandWindowLbl.Location = new System.Drawing.Point(1018, 409);
+            this.commandWindowLbl.Location = new System.Drawing.Point(1107, 409);
             this.commandWindowLbl.Name = "commandWindowLbl";
             this.commandWindowLbl.Size = new System.Drawing.Size(176, 20);
             this.commandWindowLbl.TabIndex = 10;
@@ -207,7 +207,7 @@ namespace GPLA_Assessment
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.ClientSize = new System.Drawing.Size(1216, 679);
+            this.ClientSize = new System.Drawing.Size(1305, 679);
             this.Controls.Add(this.commandWindowLbl);
             this.Controls.Add(this.errorWindowLbl);
             this.Controls.Add(this.programWindowLbl);

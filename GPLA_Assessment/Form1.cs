@@ -303,6 +303,8 @@ namespace GPLA_Assessment
 
                 // Appends the message to proceed to errorDisplayArea of the application.
                 errorDisplayArea.AppendText("The program does not have any Error!! \nYou may proceed with Run command.");
+
+                Refresh();
             }
         }
 

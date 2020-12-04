@@ -235,5 +235,45 @@ namespace GPLA_Unit_Test
                 Assert.AreEqual(eachError, expectedError);
             }
         }
+
+        /// <summary>
+        /// Performs unit Test on <see cref="Variables.checkVariables(string)"/> method by passing 'shape = rectangle' and
+        /// performed Assert Equal with "shape = circle" which does not satisfy
+        /// </summary>
+        [TestMethod]
+        public void TestCheckVariable()
+        {
+            // Initializes variable with expected Output.
+            String ExpectedVarExpression = "shape = circle";
+
+            // Object of testObject class to access methods of Canvas Class.
+            Variables testObject = new Variables();
+
+            // Calls checkVariables methods by passing "shape = rectangle" as parameter.
+            String retrievedVarExpression = testObject.checkVariables("shape = rectangle");
+
+            // Performs Unit Tests on areEqual tests using retrieved string and expected string.
+            Assert.AreEqual(ExpectedVarExpression, retrievedVarExpression);
+        }
+
+        /// <summary>
+        /// Performs unit Test on <see cref="Variables.readVariableValue(string, string)"/> method by passing 'shape" and "rectangle" and
+        /// performed Assert Equal with "circle" which does not satisfy
+        /// </summary>
+        [TestMethod]
+        public void TestReadVariable()
+        {
+            // Initializes variable with expected Output.
+            String varValues = "circle";
+
+            // Object of testObject class to access methods of Canvas Class.
+            Variables testObject = new Variables();
+
+            // Calls readVariableValue methods by passing "shape" and  "rectangle" as parameters.
+            String expectedVarValue = testObject.readVariableValue("shape", "rectangle");
+
+            // Performs Unit Tests on areEqual tests using retrieved string and expected string.
+            Assert.AreEqual(varValues, expectedVarValue);
+        }
     }
 }
