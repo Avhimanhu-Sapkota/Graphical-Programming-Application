@@ -23,6 +23,32 @@ namespace GPLA_Assessment
         Graphics g;
 
         /// <summary>
+        /// Creates a dictionary object with key and values storing string and integer when variables and values is typed by the user. 
+        /// </summary>
+        IDictionary<String, int> store_variables = new Dictionary<String, int>();
+
+        /// <summary>
+        /// Stores boolean value; true if var is included in to programWindow of application and false if not typed. 
+        /// Default value is false assuming var is not typed yet.
+        /// </summary>
+        private bool variableChecker = false;
+
+        /// <summary>
+        /// Stores first parameter when string typed in programWindow is splitted using space or equals to sign.
+        /// </summary>
+        int parameter1;
+
+        /// <summary>
+        /// Stores second parameter when string typed in programWindow is splitted using space or equals to sign.
+        /// </summary>
+        int parameter2;
+
+        /// <summary>
+        /// Stores the value of radius for the circle to be drawn in the display canvas.
+        /// </summary>
+        int radius;
+
+        /// <summary>
         /// Object of <see cref="Pen"/> <br/>Accesses methods of <see cref="Pen"/>. Helps in drawing lines and
         /// curves in the displayCanvas pictureBox of the application.
         /// </summary>
@@ -244,11 +270,39 @@ namespace GPLA_Assessment
         }
 
         /// <summary>
+        /// Method: Triggered when enteredCode has var and expression separated by space and are required to be split.
+        /// Splits the var and expression separated by space as different item and saves them into an array of string.
+        /// </summary>
+        /// <param name="varExpression"> Holds the string value which contains var and expression separated by space</param>
+        /// <returns>The string array which contains var and expression separate values as different items</returns>
+        public String[] splitVariableExpression(String varExpression)
+        {
+            /// Array of strings which stores code, separated by space, as a different item. 
+            String[] splittedVarExp = varExpression.Split(' ');
+
+            return splittedVarExp;
+        }
+
+        /// <summary>
+        /// Method: Triggered when expression has values separated by '=' and are required to be split.
+        /// Splits the parameters separated by '=' as a different item and saves them into an array of string.
+        /// </summary>
+        /// <param name="expression"> Holds the string value of expression which are separated by '=' </param>
+        /// <returns> The string array which contains expression's separated values as different items.</returns>
+        public String[] splitExpression(String expression)
+        {
+            /// Array of strings which stores code, separated by '=', as a different item. 
+            String[] splittedExpression = expression.Split('=');
+
+            return splittedExpression;
+        }
+
+        /// <summary>
         /// Method: Triggered when enteredCode has command and parameters separated by space and are required to be split.
         /// Splits the command and parameters separated by space as different item and saves them into an array of string.
         /// </summary>
         /// <param name="enteredCode"> Holds the string value which contains command and parameters separated by space</param>
-        /// <returns></returns>
+        /// <returns>The string array which contains commands and parameters separate values as different items</returns>
         public String[] CommandSplitter(String enteredCode)
         {
             /// Array of strings which stores code, separated by space, as a different item. 
@@ -261,7 +315,7 @@ namespace GPLA_Assessment
         /// Method: Triggered when parameters has values separated by ',' and are required to be split.
         /// Splits the parameters separated by ',' as a different item and saves them into an array of string.
         /// </summary>
-        /// <param name="parameters">Holds the string value of parameters which parameters separated by ',' </param>
+        /// <param name="parameters">Holds the string value of parameters which are separated by ',' </param>
         /// <returns> The string array which contains parameter's separated values as different items.</returns>
         public String[] ParameterSplitter(String parameters)
         {
@@ -281,6 +335,40 @@ namespace GPLA_Assessment
         /// <param name="syntaxButton">Holds the boolean value of syntaxButton which confirms if syntaxButton was pressed in the application</param>
         public void programReader(String enteredCode, int lineCounter, bool syntaxButton)
         {
+
+            /*
+             * Checks if the text entered in programWindow contains 'var' and performs the task underneath, only if it contains.
+             */
+            if (enteredCode.Contains("var"))
+            {
+                // Changes the boolean value of variableChecker to true as the line contain var.
+                variableChecker = true;
+
+                // Concatenates " 1" to the enteredCode so that it can be stored as key and value
+                enteredCode = enteredCode + " 1";
+                
+                // Calls method to split the enteredCode into var and expression separated by space and stores the splitted values in string array.
+                String[] splittedVarExpression = splitVariableExpression(enteredCode);
+
+                // Extracts the expression necessary from the array and stores it as string in expression.
+                String expression = splittedVarExpression[1];
+
+                // Calls method to split the expression into variable and values separated by '=' and stores the splitted values in string array
+                String[] splittedExpression = splitExpression(expression);
+
+                // Extract the variable name from the array and stores it as string in varName.
+                String varName = splittedExpression[0];
+
+                // Extract the variable value from the array and stores it as string in varValue.
+                String varValue = splittedExpression[1];
+
+                // Converst the value of variable from string to integer in order to perform integer functions.
+                int intVarValue = Convert.ToInt32(varValue);
+
+                // Adds the name of variable as key and integer value of variable as value to the dictionary created. 
+                store_variables.Add(varName, intVarValue);
+            }
+
             /*
              * Checks if the enteredCode is triangle and concatenates " 1" so that it will avoid errors when the code is later splitted.
              */
@@ -420,9 +508,29 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                        
-                        // Retrieves the value of parameters, converts it to Integer and stores to radius variable.
-                        int radius = Convert.ToInt32(parameters);
+                      
+
+                        /*
+                        * Checks if the variableChecker is true or false and performs tasks underneath accordingly.
+                        */
+                        if (variableChecker)
+                        {
+                            /*
+                             * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
+                             */
+                            if (store_variables.ContainsKey(parameters))
+                            {
+                                //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                                radius = Convert.ToInt32(store_variables[parameters]);
+                            }
+                        }
+
+                        else
+                        {
+                            // Retrieves the value of parameters, converts it to Integer and stores to radius variable.
+                            radius = Convert.ToInt32(parameters);
+                        }
+
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
                          */
@@ -447,11 +555,36 @@ namespace GPLA_Assessment
                         /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
                         String[] splittedParameters = ParameterSplitter(parameters);
 
-                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+                        /*
+                         * Checks if the variableChecker is true or false and performs tasks underneath accordingly.
+                         */
+                        if (variableChecker)
+                        {
+                            /*
+                             * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
+                             */
+                            if (store_variables.ContainsKey(splittedParameters[0]))
+                            {
+                                //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                                parameter1 = Convert.ToInt32(store_variables[splittedParameters[0]]);
+                            }
+                            
+                            if (store_variables.ContainsKey(splittedParameters[1]))
+                            {
+                                /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                                parameter2 = Convert.ToInt32(store_variables[splittedParameters[1]]);
+                            }
+                        }
 
-                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+                        else
+                        {
+                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                            parameter1 = Convert.ToInt32(splittedParameters[0]);
+
+                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                            parameter2 = Convert.ToInt32(splittedParameters[1]);
+                        }
+
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
                          */
@@ -482,11 +615,35 @@ namespace GPLA_Assessment
                         /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
                         String[] splittedParameters = ParameterSplitter(parameters);
 
-                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+                        /*
+                        * Checks if the variableChecker is true or false and performs tasks underneath accordingly.
+                        */
+                        if (variableChecker)
+                        {
+                            /*
+                             * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
+                             */
+                            if (store_variables.ContainsKey(splittedParameters[0]))
+                            {
+                                //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                                parameter1 = Convert.ToInt32(store_variables[splittedParameters[0]]);
+                            }
 
-                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+                            if (store_variables.ContainsKey(splittedParameters[1]))
+                            {
+                                /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                                parameter2 = Convert.ToInt32(store_variables[splittedParameters[1]]);
+                            }
+                        }
+
+                        else
+                        {
+                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                            parameter1 = Convert.ToInt32(splittedParameters[0]);
+
+                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                            parameter2 = Convert.ToInt32(splittedParameters[1]);
+                        }
 
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
@@ -518,11 +675,35 @@ namespace GPLA_Assessment
                         /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
                         String[] splittedParameters = ParameterSplitter(parameters);
 
-                        /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter1 = Convert.ToInt32(splittedParameters[0]);
+                        /*
+                        * Checks if the variableChecker is true or false and performs tasks underneath accordingly.
+                        */
+                        if (variableChecker)
+                        {
+                            /*
+                             * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
+                             */
+                            if (store_variables.ContainsKey(splittedParameters[0]))
+                            {
+                                //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                                parameter1 = Convert.ToInt32(store_variables[splittedParameters[0]]);
+                            }
 
-                        /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter1.
-                        int parameter2 = Convert.ToInt32(splittedParameters[1]);
+                            if (store_variables.ContainsKey(splittedParameters[1]))
+                            {
+                                /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                                parameter2 = Convert.ToInt32(store_variables[splittedParameters[1]]);
+                            }
+                        }
+
+                        else
+                        {
+                            /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                            parameter1 = Convert.ToInt32(splittedParameters[0]);
+
+                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                            parameter2 = Convert.ToInt32(splittedParameters[1]);
+                        }
 
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
