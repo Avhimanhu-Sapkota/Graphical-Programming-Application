@@ -25,7 +25,7 @@ namespace GPLA_Assessment
         /// <summary>
         /// Creates a dictionary object with key and values storing string and integer when variables and values is typed by the user. 
         /// </summary>
-        IDictionary<String, int> store_variables = new Dictionary<String, int>();
+        public IDictionary<String, int> storeVariables = new Dictionary<String, int>();
 
         /// <summary>
         /// Stores boolean value; true if var is included in to programWindow of application and false if not typed. 
@@ -88,6 +88,9 @@ namespace GPLA_Assessment
         /// False when fill has been set to 'off'
         /// </summary>
         public bool fill;
+
+        PerformIF performIFObject = new PerformIF();
+        bool ifConditionFlag = false;
 
         /// <summary>
         /// Stores the name of <see cref="Color"/> which will be used in pen to draw objects of different colors. 
@@ -270,6 +273,15 @@ namespace GPLA_Assessment
         }
 
         /// <summary>
+        /// Method: Erases all items which are stored in the Dictionary: <see cref="sto"/>
+        /// </summary>
+        public void clearDictionary()
+        {
+            // Clears all the data items stored in the dictionary.
+            storeVariables.Clear();
+        }
+
+        /// <summary>
         /// Method: Triggered when enteredCode has var and expression separated by space and are required to be split.
         /// Splits the var and expression separated by space as different item and saves them into an array of string.
         /// </summary>
@@ -366,9 +378,34 @@ namespace GPLA_Assessment
                 int intVarValue = Convert.ToInt32(varValue);
 
                 // Adds the name of variable as key and integer value of variable as value to the dictionary created. 
-                store_variables.Add(varName, intVarValue);
+                storeVariables.Add(varName, intVarValue);
             }
 
+            if (enteredCode.Contains("if"))
+            {
+                ifConditionFlag = performIFObject.checkIfCommand(enteredCode);
+            }
+
+            if (ifConditionFlag)
+            {
+                //search for endif or check if singleline if
+                if (enteredCode.Equals("endif"))
+                {
+                    ifConditionFlag = false;
+                }
+                else if (enteredCode.Equals("then"))
+                {
+                    ifConditionFlag = false;
+                }
+            }
+            else
+            {
+                OldCommands(enteredCode, lineCounter, syntaxButton);
+            }
+        }
+
+        public void OldCommands(String enteredCode, int lineCounter, bool syntaxButton)
+        {
             /*
              * Checks if the enteredCode is triangle and concatenates " 1" so that it will avoid errors when the code is later splitted.
              */
@@ -494,9 +531,9 @@ namespace GPLA_Assessment
 
                 else if (command.Equals("triangle"))
                 {
-                   /*
-                    * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
-                    */
+                    /*
+                     * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                     */
                     if (!syntaxButton)
                     {
                         // Calls method DrawTriangle, which draws triangle, as the command holds string triangle.
@@ -508,7 +545,6 @@ namespace GPLA_Assessment
                 {
                     try
                     {
-                      
 
                         /*
                         * Checks if the variableChecker is true or false and performs tasks underneath accordingly.
@@ -518,11 +554,14 @@ namespace GPLA_Assessment
                             /*
                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
                              */
-                            if (store_variables.ContainsKey(parameters))
+                            if (storeVariables.ContainsKey(parameters))
                             {
                                 //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                                radius = Convert.ToInt32(store_variables[parameters]);
+                                radius = Convert.ToInt32(storeVariables[parameters]);
                             }
+
+                            // Changes the boolean value of variableChecker to false as the desired work is done.
+                            variableChecker = false;
                         }
 
                         else
@@ -563,17 +602,20 @@ namespace GPLA_Assessment
                             /*
                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
                              */
-                            if (store_variables.ContainsKey(splittedParameters[0]))
+                            if (storeVariables.ContainsKey(splittedParameters[0]))
                             {
                                 //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                                parameter1 = Convert.ToInt32(store_variables[splittedParameters[0]]);
+                                parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
                             }
-                            
-                            if (store_variables.ContainsKey(splittedParameters[1]))
+
+                            if (storeVariables.ContainsKey(splittedParameters[1]))
                             {
                                 /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
-                                parameter2 = Convert.ToInt32(store_variables[splittedParameters[1]]);
+                                parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
                             }
+
+                            // Changes the boolean value of variableChecker to false as the desired work is done.
+                            variableChecker = false;
                         }
 
                         else
@@ -623,17 +665,20 @@ namespace GPLA_Assessment
                             /*
                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
                              */
-                            if (store_variables.ContainsKey(splittedParameters[0]))
+                            if (storeVariables.ContainsKey(splittedParameters[0]))
                             {
                                 //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                                parameter1 = Convert.ToInt32(store_variables[splittedParameters[0]]);
+                                parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
                             }
 
-                            if (store_variables.ContainsKey(splittedParameters[1]))
+                            if (storeVariables.ContainsKey(splittedParameters[1]))
                             {
                                 /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
-                                parameter2 = Convert.ToInt32(store_variables[splittedParameters[1]]);
+                                parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
                             }
+
+                            // Changes the boolean value of variableChecker to false as the desired work is done.
+                            variableChecker = false;
                         }
 
                         else
@@ -683,17 +728,20 @@ namespace GPLA_Assessment
                             /*
                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
                              */
-                            if (store_variables.ContainsKey(splittedParameters[0]))
+                            if (storeVariables.ContainsKey(splittedParameters[0]))
                             {
                                 //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                                parameter1 = Convert.ToInt32(store_variables[splittedParameters[0]]);
+                                parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
                             }
 
-                            if (store_variables.ContainsKey(splittedParameters[1]))
+                            if (storeVariables.ContainsKey(splittedParameters[1]))
                             {
                                 /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
-                                parameter2 = Convert.ToInt32(store_variables[splittedParameters[1]]);
+                                parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
                             }
+
+                            // Changes the boolean value of variableChecker to false as the desired work is done.
+                            variableChecker = false;
                         }
 
                         else

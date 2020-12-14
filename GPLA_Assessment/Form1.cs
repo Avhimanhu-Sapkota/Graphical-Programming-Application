@@ -205,6 +205,9 @@ namespace GPLA_Assessment
                 // Calls clearErrorList() method of Canvas class.
                 canvasObject.clearErrorList();
 
+                // Calls clearDictionary() method of Canvas class.
+                canvasObject.clearDictionary();
+
                 /// Retrieves and Stores the text written in Command Line Window
                 String command = commandLineWindow.Text;
 
@@ -263,6 +266,9 @@ namespace GPLA_Assessment
 
             // Calls clearErrorList() method of Canvas class.
             canvasObject.clearErrorList();
+
+            // Calls clearDictionary() method of Canvas class.
+            canvasObject.clearDictionary();
 
             /// Creates an array of string, retrieves the text from programWindow and stores the lines. 
             String[] multilineCodes = programWindow.Lines;
