@@ -11,12 +11,13 @@ namespace GPLA_Assessment
     class PerformIF
     {
         bool ifCommandFlag = false;
-        Canvas canvasObject = new Canvas();
+        int variableValue;
+        int variableName;
 
-        public bool checkIfCommand (String enteredCode)
+        public bool checkIfCommand(String enteredCode)
         {
             enteredCode = Regex.Replace(enteredCode, @"\s+", "");
-            String [] command = enteredCode.Split('(');
+            String[] command = enteredCode.Split('(');
             String ifOperator;
             String ifCondition;
 
@@ -30,61 +31,114 @@ namespace GPLA_Assessment
                     if (ifCondition.Contains("=="))
                     {
                         ifOperator = "==";
-                        ifCommandFlag = true;
                     }
                     else if (ifCondition.Contains("!="))
                     {
                         ifOperator = "!=";
-                        ifCommandFlag = true;
                     }
                     else if (ifCondition.Contains("<=") && !ifCondition.Contains(">"))
                     {
                         ifOperator = "<=";
-                        ifCommandFlag = true;
                     }
                     else if (ifCondition.Contains(">=") && !ifCondition.Contains("<"))
                     {
                         ifOperator = ">=";
-                        ifCommandFlag = true;
                     }
                     else if (ifCondition.Contains("<") && !ifCondition.Contains("=") && !ifCondition.Contains(">"))
                     {
                         ifOperator = "<";
-                        ifCommandFlag = true;
                     }
                     else if (ifCondition.Contains(">") && !ifCondition.Contains("=") && !ifCondition.Contains("<"))
                     {
                         ifOperator = ">";
-                        ifCommandFlag = true;
                     }
                     else
                     {
                         ifOperator = "Invalid";
-                        ifCommandFlag = false;
                     }
-                    MessageBox.Show("IF: " + ifOperator);
-                    executeIFCommand(ifOperator, ifCondition);
+
+                    ifCommandFlag = executeIFCommand(ifOperator, ifCondition);
                 }
             }
-
             return ifCommandFlag;
         }
-
-        public void executeIFCommand(String ifOperator, String ifCondition)
+        
+        public bool executeIFCommand(String ifOperator, String ifCondition)
         {
+            bool conditionCheck = false;
+            Canvas canvasObject = new Canvas();
             String[] splittedIFCondition = ifCondition.Split(new String[] {ifOperator}, StringSplitOptions.RemoveEmptyEntries);
-            //MessageBox.Show(splittedIFCondition[0] + splittedIFCondition[1]);
+            //MessageBox.Show(splittedIFCondition[0] + splittedIFCondition[1]); 
 
-            if (canvasObject.storeVariables.ContainsKey(splittedIFCondition[0]))
+            if (Canvas.storeVariables.ContainsKey(splittedIFCondition[0]))
             {
-                int variable = canvasObject.storeVariables[splittedIFCondition[0]];
+                // try ---------
+                variableName = Canvas.storeVariables[splittedIFCondition[0]];
 
-                if (ifOperator == "==")
+                if (Canvas.storeVariables.ContainsKey(splittedIFCondition[1]))
                 {
-                   // variable == Convert.ToInt32(splittedIFCondition[1]);
+                    variableValue = Canvas.storeVariables[splittedIFCondition[1]];
+                }
+                else
+                {
+                    variableValue = Convert.ToInt32(splittedIFCondition[1]);
                 }
 
+                if (ifOperator.Equals("=="))
+                {
+                   if (variableName == variableValue)
+                    {
+                        MessageBox.Show(" == ");
+                        conditionCheck = true;
+                    }
+                }
+                else if (ifOperator.Equals("!="))
+                {
+                    if (variableName != variableValue)
+                    {
+                        MessageBox.Show(" != ");
+                        conditionCheck = true;
+                    }
+                }
+                else if (ifOperator.Equals(">="))
+                {
+                    if (variableName >= variableValue)
+                    {
+                        MessageBox.Show(" >= ");
+                        conditionCheck = true;
+                    }
+                }
+                else if (ifOperator.Equals("<="))
+                {
+                    if (variableName <= variableValue)
+                    {
+                        MessageBox.Show(" <= ");
+                        conditionCheck = true;
+                    }
+                }
+                else if (ifOperator.Equals("<"))
+                {
+                    if (variableName < variableValue)
+                    {
+                        MessageBox.Show(" < ");
+                        conditionCheck = true;
+                    }
+                }
+                else if (ifOperator.Equals(">"))
+                {
+                    if (variableName > variableValue)
+                    {
+                        MessageBox.Show(" > ");
+                        conditionCheck = true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(" Not Matched ");
+                    conditionCheck = false;
+                }
             }
+            return conditionCheck;
         }
     }
 }
