@@ -56,7 +56,6 @@ namespace GPLA_Assessment
                     {
                         ifOperator = "Invalid";
                     }
-
                     ifCommandFlag = executeIFCommand(ifOperator, ifCondition);
                 }
             }
@@ -68,7 +67,6 @@ namespace GPLA_Assessment
             bool conditionCheck = false;
             Canvas canvasObject = new Canvas();
             String[] splittedIFCondition = ifCondition.Split(new String[] {ifOperator}, StringSplitOptions.RemoveEmptyEntries);
-            //MessageBox.Show(splittedIFCondition[0] + splittedIFCondition[1]); 
 
             if (Canvas.storeVariables.ContainsKey(splittedIFCondition[0]))
             {
@@ -88,7 +86,6 @@ namespace GPLA_Assessment
                 {
                    if (variableName == variableValue)
                     {
-                        MessageBox.Show(" == ");
                         conditionCheck = true;
                     }
                 }
@@ -96,7 +93,6 @@ namespace GPLA_Assessment
                 {
                     if (variableName != variableValue)
                     {
-                        MessageBox.Show(" != ");
                         conditionCheck = true;
                     }
                 }
@@ -104,7 +100,6 @@ namespace GPLA_Assessment
                 {
                     if (variableName >= variableValue)
                     {
-                        MessageBox.Show(" >= ");
                         conditionCheck = true;
                     }
                 }
@@ -112,7 +107,6 @@ namespace GPLA_Assessment
                 {
                     if (variableName <= variableValue)
                     {
-                        MessageBox.Show(" <= ");
                         conditionCheck = true;
                     }
                 }
@@ -120,7 +114,6 @@ namespace GPLA_Assessment
                 {
                     if (variableName < variableValue)
                     {
-                        MessageBox.Show(" < ");
                         conditionCheck = true;
                     }
                 }
@@ -128,13 +121,11 @@ namespace GPLA_Assessment
                 {
                     if (variableName > variableValue)
                     {
-                        MessageBox.Show(" > ");
                         conditionCheck = true;
                     }
                 }
                 else
                 {
-                    MessageBox.Show(" Not Matched ");
                     conditionCheck = false;
                 }
             }

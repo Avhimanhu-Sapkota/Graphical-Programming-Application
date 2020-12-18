@@ -90,9 +90,11 @@ namespace GPLA_Assessment
         public bool fill;
 
         PerformIF performIFObject = new PerformIF();
+        PerformLoop performLoopObject = new PerformLoop();
         bool ifConditionFlag = false;
         bool conditionNotMatched = false;
         bool thenFlag = false;
+        bool loopConditionFlag = false;
 
         /// <summary>
         /// Stores the name of <see cref="Color"/> which will be used in pen to draw objects of different colors. 
@@ -429,7 +431,18 @@ namespace GPLA_Assessment
                     OldCommands(enteredCode, lineCounter, syntaxButton);
                 }
             }
-        }
+
+            //----------------------------------------------------------------------------------------
+            if (declareName.Equals("while"))
+            {
+                MessageBox.Show("WHILE");
+            }
+            else
+            {
+                OldCommands(enteredCode, lineCounter, syntaxButton);
+            }
+         }
+
 
         public void OldCommands(String enteredCode, int lineCounter, bool syntaxButton)
         {
