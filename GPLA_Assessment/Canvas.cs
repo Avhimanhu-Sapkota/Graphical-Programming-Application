@@ -95,6 +95,10 @@ namespace GPLA_Assessment
         bool conditionNotMatched = false;
         bool thenFlag = false;
         bool loopConditionFlag = false;
+        bool loopConditionMatched = false;
+        String whileCommand;
+        bool whileFlag = false;
+        bool ifFlag = false;
 
         /// <summary>
         /// Stores the name of <see cref="Color"/> which will be used in pen to draw objects of different colors. 
@@ -395,6 +399,7 @@ namespace GPLA_Assessment
 
             if (declareName.Equals("if"))
             {
+                ifFlag = true;
                 ifConditionFlag = performIFObject.checkIfCommand(enteredCode);
 
                 if (enteredCode.Contains("then"))
@@ -412,37 +417,50 @@ namespace GPLA_Assessment
                     conditionNotMatched = true;
                 }
             }
-            else
+            else if (ifFlag)
             {
                 if (conditionNotMatched)
                 {
                     if (enteredCode.Equals("endif"))
                     {
                         conditionNotMatched = false;
+                        ifFlag = false;
                     }
                     
                     if (thenFlag)
                     {
                         conditionNotMatched = false;
+                        ifFlag = false;
                     }
-                }
-                else
-                {
-                    OldCommands(enteredCode, lineCounter, syntaxButton);
                 }
             }
 
-            //----------------------------------------------------------------------------------------
-            if (declareName.Equals("while"))
+            else if (declareName.Equals("while"))
             {
-                MessageBox.Show("WHILE");
+                loopConditionFlag = performLoopObject.checkLoopCommand(enteredCode);
+
+                if (loopConditionFlag)
+                {
+                    whileCommand = enteredCode;
+                    loopConditionMatched = true;
+                }
+                else
+                {
+                    loopConditionMatched = false;
+                }
+
+                whileFlag = true;
             }
+            else if (whileFlag)
+            {
+                whileFlag = performLoopObject.executeLoop(whileFlag, loopConditionMatched, whileCommand, enteredCode, lineCounter, syntaxButton);
+            }
+
             else
             {
                 OldCommands(enteredCode, lineCounter, syntaxButton);
             }
          }
-
 
         public void OldCommands(String enteredCode, int lineCounter, bool syntaxButton)
         {

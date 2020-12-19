@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GPLA_Assessment
 {
     class PerformLoop
     {
-
+        ArrayList loopCommands = new ArrayList();
+        bool loopConditionFlag = false;
         bool loopCommandFlag = false;
         int variableValue;
         int variableName;
@@ -66,7 +69,7 @@ namespace GPLA_Assessment
         {
             bool conditionCheck = false;
             Canvas canvasObject = new Canvas();
-            String[] splittedLoopCondition = loopCondition.Split(new String[] { loopCondition }, StringSplitOptions.RemoveEmptyEntries);
+            String[] splittedLoopCondition = loopCondition.Split(new String[] { loopOperator }, StringSplitOptions.RemoveEmptyEntries);
 
             if (Canvas.storeVariables.ContainsKey(splittedLoopCondition[0]))
             {
@@ -130,6 +133,47 @@ namespace GPLA_Assessment
                 }
             }
             return conditionCheck;
+        }
+
+        public bool executeLoop(bool whileFlag, bool loopConditionMatched, String whileCommand, String enteredCode, int lineCounter, bool syntaxButton)
+        {
+            if (enteredCode.Equals("endloop"))
+            {
+                if (loopConditionMatched)
+                {
+                    runLoop(lineCounter, syntaxButton, whileCommand);
+                    loopCommands.Clear();
+                    whileFlag = false;
+                }
+                else
+                {
+                    loopCommands.Clear();
+                    whileFlag = false;
+                }
+            }
+            else
+            {
+                loopCommands.Add(enteredCode);
+            }
+
+            return whileFlag;
+        }
+
+        public void runLoop(int lineCounter, bool syntaxButton, String whileCommand)
+        {
+            Canvas canvasObject = new Canvas();
+
+            foreach (String item in loopCommands)
+            {
+                canvasObject.OldCommands(item, lineCounter, syntaxButton);
+            }
+
+            loopConditionFlag = checkLoopCommand(whileCommand);
+
+            if (loopConditionFlag)
+            {
+                runLoop(lineCounter, syntaxButton, whileCommand);
+            }
         }
     }
 }
