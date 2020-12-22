@@ -20,7 +20,9 @@ namespace GPLA_Assessment
         /// Object of <see cref="Graphics"/>. Access methods of <see cref="Graphics"/> class. <br/>
         /// Helps to draw graphical contents in the displayCanvas pictureBox of the application.
         /// </summary>
-        Graphics g;
+        public Graphics g;
+
+        public string refer;
 
         /// <summary>
         /// Creates a dictionary object with key and values storing string and integer when variables and values is typed by the user. 
@@ -52,17 +54,17 @@ namespace GPLA_Assessment
         /// Object of <see cref="Pen"/> <br/>Accesses methods of <see cref="Pen"/>. Helps in drawing lines and
         /// curves in the displayCanvas pictureBox of the application.
         /// </summary>
-        Pen pen = new Pen(Color.Black, 1);
+        public Pen pen = new Pen(Color.Black, 1);
 
         /// <summary>
         /// Stores the integer value of  x-coordinate of the displayCanvas PictureBox of the application
         /// </summary>
-        int pointX;
+        public int pointX;
 
         /// <summary>
         /// Stores the integer value of  y-coordinate of the displayCanvas PictureBox of the application
         /// </summary>
-        int pointY;
+        public int pointY;
 
         /// <summary>
         /// Object of <see cref="ArrayList"/><br/>
@@ -124,6 +126,8 @@ namespace GPLA_Assessment
 
             // Sets the default fill option to false.
             fill = false;
+
+            refer = "default";
         }
 
         /// <summary>
@@ -246,7 +250,7 @@ namespace GPLA_Assessment
 
             // Sets the Color, fill value, (x,y) of cursor, and radius of the circle.
             newShape.set(newColor, fill, pointX, pointY, radius);
-
+            
             // Draws circle , in the displayCanvas, using the values set.
             newShape.draw(g);
         }
@@ -366,41 +370,46 @@ namespace GPLA_Assessment
 
                 // Concatenates " 1" to the enteredCode so that it can be stored as key and value
                 enteredCode = enteredCode + " 1";
-                
-                // Calls method to split the enteredCode into var and expression separated by space and stores the splitted values in string array.
-                String[] splittedVarExpression = splitVariableExpression(enteredCode);
 
-                // Extracts the expression necessary from the array and stores it as string in expression.
-                String expression = splittedVarExpression[1];
+                try
+                {
+                    // Calls method to split the enteredCode into var and expression separated by space and stores the splitted values in string array.
+                    String[] splittedVarExpression = splitVariableExpression(enteredCode);
 
-                // Calls method to split the expression into variable and values separated by '=' and stores the splitted values in string array
-                String[] splittedExpression = splitExpression(expression);
+                    // Extracts the expression necessary from the array and stores it as string in expression.
+                    String expression = splittedVarExpression[1];
 
-                // Extract the variable name from the array and stores it as string in varName.
-                String varName = splittedExpression[0];
+                    // Calls method to split the expression into variable and values separated by '=' and stores the splitted values in string array
+                    String[] splittedExpression = splitExpression(expression);
 
-                // Extract the variable value from the array and stores it as string in varValue.
-                String varValue = splittedExpression[1];
+                    // Extract the variable name from the array and stores it as string in varName.
+                    String varName = splittedExpression[0];
 
-                // Converst the value of variable from string to integer in order to perform integer functions.
-                int intVarValue = Convert.ToInt32(varValue);
+                    // Extract the variable value from the array and stores it as string in varValue.
+                    String varValue = splittedExpression[1];
 
-                // Adds the name of variable as key and integer value of variable as value to the dictionary created. 
-                storeVariables.Add(varName, intVarValue);
+                    // Converst the value of variable from string to integer in order to perform integer functions.
+                    int intVarValue = Convert.ToInt32(varValue);
+
+                    // Adds the name of variable as key and integer value of variable as value to the dictionary created. 
+                    storeVariables.Add(varName, intVarValue);
+                }
+                catch (FormatException)
+                {
+                    errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter in correct syntax (EX: var<space><varName>=<varValue>)'");
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter in correct syntax (EX: var<space><varName>=<varValue>)'");
+                }
             }
 
             String declareName = enteredCode.Split(' ')[0];
 
-            if (thenFlag && !conditionNotMatched)
-            {
-                OldCommands(enteredCode, lineCounter, syntaxButton);
-                thenFlag = false;
-            }
-
             if (declareName.Equals("if"))
             {
                 ifFlag = true;
-                ifConditionFlag = performIFObject.checkIfCommand(enteredCode);
+                ifConditionFlag = performIFObject.checkIfCommand(enteredCode, lineCounter);
 
                 if (enteredCode.Contains("then"))
                 {
@@ -413,7 +422,6 @@ namespace GPLA_Assessment
                 }
                 else
                 {
-                    MessageBox.Show("Condition Not Matched");
                     conditionNotMatched = true;
                 }
             }
@@ -433,8 +441,22 @@ namespace GPLA_Assessment
                         ifFlag = false;
                     }
                 }
-            }
+                else
+                {
+                    OldCommands(enteredCode, lineCounter, syntaxButton);
 
+                    if (enteredCode.Equals("endif"))
+                    {
+                        conditionNotMatched = false;
+                        ifFlag = false;
+                    }
+                }
+            }
+            else if (thenFlag && !conditionNotMatched)
+            {
+                OldCommands(enteredCode, lineCounter, syntaxButton);
+                thenFlag = false;
+            }
             else if (declareName.Equals("while"))
             {
                 loopConditionFlag = performLoopObject.checkLoopCommand(enteredCode);
@@ -453,9 +475,101 @@ namespace GPLA_Assessment
             }
             else if (whileFlag)
             {
-                whileFlag = performLoopObject.executeLoop(whileFlag, loopConditionMatched, whileCommand, enteredCode, lineCounter, syntaxButton);
+                ArrayList tempList = new ArrayList();
+                tempList.Add(g);
+                tempList.Add(pointX);
+                tempList.Add(pointY);
+                tempList.Add(pen);
+                whileFlag = performLoopObject.executeLoop(whileFlag, loopConditionMatched, whileCommand, enteredCode, lineCounter, syntaxButton, tempList);
             }
-
+            else if (enteredCode.Contains("+"))
+            {
+                String[] expParameter = enteredCode.Split('+'); 
+                if (storeVariables.ContainsKey(expParameter[0]))
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] + storeVariables[expParameter[1]];
+                    }
+                    else
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] + Convert.ToInt32(expParameter[1]);
+                    }
+                }
+                else
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[1]] = storeVariables[expParameter[1]] + Convert.ToInt32(expParameter[0]);
+                    }
+                 }
+            }
+            else if (enteredCode.Contains("-"))
+            {
+                String[] expParameter = enteredCode.Split('-');
+                if (storeVariables.ContainsKey(expParameter[0]))
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] - storeVariables[expParameter[1]];
+                    }
+                    else
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] - Convert.ToInt32(expParameter[1]);
+                    }
+                }
+                else
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[1]] = storeVariables[expParameter[1]] - Convert.ToInt32(expParameter[0]);
+                    }
+                }
+            }
+            else if (enteredCode.Contains("*"))
+            {
+                String[] expParameter = enteredCode.Split('*');
+                if (storeVariables.ContainsKey(expParameter[0]))
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] * storeVariables[expParameter[1]];
+                    }
+                    else
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] * Convert.ToInt32(expParameter[1]);
+                    }
+                }
+                else
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[1]] = storeVariables[expParameter[1]] * Convert.ToInt32(expParameter[0]);
+                    }
+                }
+            }
+            else if (enteredCode.Contains("/"))
+            {
+                String[] expParameter = enteredCode.Split('/');
+                if (storeVariables.ContainsKey(expParameter[0]))
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] / storeVariables[expParameter[1]];
+                    }
+                    else
+                    {
+                        storeVariables[expParameter[0]] = storeVariables[expParameter[0]] / Convert.ToInt32(expParameter[1]);
+                    }
+                }
+                else
+                {
+                    if (storeVariables.ContainsKey(expParameter[1]))
+                    {
+                        storeVariables[expParameter[1]] = storeVariables[expParameter[1]] / Convert.ToInt32(expParameter[0]);
+                    }
+                }
+            }
             else
             {
                 OldCommands(enteredCode, lineCounter, syntaxButton);
@@ -616,7 +730,7 @@ namespace GPLA_Assessment
                             // Retrieves the value of parameters, converts it to Integer and stores to radius variable.
                             radius = Convert.ToInt32(parameters);
                         }
-
+                     
                         /*
                          * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
                          */
@@ -655,11 +769,15 @@ namespace GPLA_Assessment
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
                         }
-                        else
+
+                        if (parameter1 == 0)
                         {
                             /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
                             parameter1 = Convert.ToInt32(splittedParameters[0]);
+                        }
 
+                        if (parameter2 == 0)
+                        {
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(splittedParameters[1]);
                         }
@@ -708,11 +826,15 @@ namespace GPLA_Assessment
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
                         }
-                        else
+
+                        if (parameter1 == 0)
                         {
                             /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
                             parameter1 = Convert.ToInt32(splittedParameters[0]);
+                        }
 
+                        if (parameter2 == 0)
+                        {
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(splittedParameters[1]);
                         }
@@ -748,8 +870,8 @@ namespace GPLA_Assessment
                         String[] splittedParameters = ParameterSplitter(parameters);
 
                         /*
-                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
-                              */
+                             * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
+                             */
                         if (storeVariables.ContainsKey(splittedParameters[0]))
                         {
                             //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
@@ -762,11 +884,14 @@ namespace GPLA_Assessment
                             parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
                         }
 
-                        else
+                        if (parameter1 == 0)
                         {
                             /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
                             parameter1 = Convert.ToInt32(splittedParameters[0]);
-
+                        }
+                        
+                        if (parameter2 == 0)
+                        {
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(splittedParameters[1]);
                         }
@@ -793,7 +918,10 @@ namespace GPLA_Assessment
                         errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Two Numeric Values for coordinates.");
                     }
                 }
+                else if (command.Equals("var"))
+                {
 
+                }
                 else
                 {
                     // Calls a method which adds the specified string in the arrayList errorList. 

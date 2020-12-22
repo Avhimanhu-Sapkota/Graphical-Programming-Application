@@ -14,13 +14,13 @@ namespace GPLA_Assessment
         int variableValue;
         int variableName;
 
-        public bool checkIfCommand(String enteredCode)
+        public bool checkIfCommand(String enteredCode, int lineCounter)
         {
             enteredCode = Regex.Replace(enteredCode, @"\s+", "");
             String[] command = enteredCode.Split('(');
             String ifOperator;
             String ifCondition;
-
+            Canvas canvasObject = new Canvas();
 
             if (command[0].Equals("if"))
             {
@@ -55,8 +55,13 @@ namespace GPLA_Assessment
                     else
                     {
                         ifOperator = "Invalid";
+                        canvasObject.errorList.Add("ERROR!!! AT LINE " + lineCounter + ".Please enter valid operator");
                     }
                     ifCommandFlag = executeIFCommand(ifOperator, ifCondition);
+                }
+                else
+                {
+                    canvasObject.errorList.Add("ERROR!!! AT LINE " + lineCounter + ".Please enter valid operator");
                 }
             }
             return ifCommandFlag;
@@ -65,7 +70,6 @@ namespace GPLA_Assessment
         public bool executeIFCommand(String ifOperator, String ifCondition)
         {
             bool conditionCheck = false;
-            Canvas canvasObject = new Canvas();
             String[] splittedIFCondition = ifCondition.Split(new String[] {ifOperator}, StringSplitOptions.RemoveEmptyEntries);
 
             if (Canvas.storeVariables.ContainsKey(splittedIFCondition[0]))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -135,13 +136,13 @@ namespace GPLA_Assessment
             return conditionCheck;
         }
 
-        public bool executeLoop(bool whileFlag, bool loopConditionMatched, String whileCommand, String enteredCode, int lineCounter, bool syntaxButton)
+        public bool executeLoop(bool whileFlag, bool loopConditionMatched, String whileCommand, String enteredCode, int lineCounter, bool syntaxButton, ArrayList canvasList)
         {
             if (enteredCode.Equals("endloop"))
             {
                 if (loopConditionMatched)
                 {
-                    runLoop(lineCounter, syntaxButton, whileCommand);
+                    runLoop(lineCounter, syntaxButton, whileCommand, canvasList);
                     loopCommands.Clear();
                     whileFlag = false;
                 }
@@ -159,20 +160,26 @@ namespace GPLA_Assessment
             return whileFlag;
         }
 
-        public void runLoop(int lineCounter, bool syntaxButton, String whileCommand)
+        public void runLoop(int lineCounter, bool syntaxButton, String whileCommand, ArrayList canvasList)
         {
+            
             Canvas canvasObject = new Canvas();
+            canvasObject.g = (Graphics)canvasList[0];
+            canvasObject.pointX = (int)canvasList[1];
+            canvasObject.pointY = (int)canvasList[2];
+            canvasObject.pen = (Pen)canvasList[3];
 
-            foreach (String item in loopCommands)
+            loopConditionFlag = true;
+
+            while (loopConditionFlag)
             {
-                canvasObject.OldCommands(item, lineCounter, syntaxButton);
-            }
+                foreach (String item in loopCommands)
+                {
+                    //MessageBox.Show(" " + item);
+                    canvasObject.programReader(item, lineCounter, syntaxButton);
+                }
 
-            loopConditionFlag = checkLoopCommand(whileCommand);
-
-            if (loopConditionFlag)
-            {
-                runLoop(lineCounter, syntaxButton, whileCommand);
+                loopConditionFlag = checkLoopCommand(whileCommand);
             }
         }
     }

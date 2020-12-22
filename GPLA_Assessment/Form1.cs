@@ -46,6 +46,7 @@ namespace GPLA_Assessment
             InitializeComponent();
             // Draws the contents from the bitmapCanvas into the application's pictureBox: displayCanvas
             canvasObject = new Canvas(Graphics.FromImage(bitmapCanvas));
+            canvasObject.refer = "something ";
         }
 
         /// <summary>
