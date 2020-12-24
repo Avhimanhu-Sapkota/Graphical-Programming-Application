@@ -1,0 +1,857 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GPLA_Assessment</name>
+    </assembly>
+    <members>
+        <member name="T:GPLA_Assessment.Canvas">
+            <summary>
+            Performs various tasks when changes are made in the application window and <br/>also makes changes in the application in reaction to the changes made.
+            Implements methods: <br/><see cref="M:GPLA_Assessment.Canvas.ClearScreen"/>, <see cref="!:MoveTo)"/>, <see cref="M:GPLA_Assessment.Canvas.ResetPen"/>, <see cref="M:GPLA_Assessment.Canvas.DrawLine(System.Drawing.Color,System.Int32,System.Int32)"/>, <see cref="M:GPLA_Assessment.Canvas.DrawRectangle(System.Drawing.Color,System.Boolean,System.Int32,System.Int32)"/>
+            <br/><see cref="M:GPLA_Assessment.Canvas.DrawCircle(System.Drawing.Color,System.Boolean,System.Int32)"/>, <see cref="M:GPLA_Assessment.Canvas.DrawTriangle(System.Drawing.Color,System.Boolean)"/>, <see cref="M:GPLA_Assessment.Canvas.OldCommands(System.String,System.Int32,System.Boolean)"/>, and <see cref="M:GPLA_Assessment.Canvas.programReader(System.String,System.Int32,System.Boolean)"/>
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.g">
+            <summary>
+            Object of <see cref="T:System.Drawing.Graphics"/>. Access methods of <see cref="T:System.Drawing.Graphics"/> class. <br/>
+            Helps to draw graphical contents in the displayCanvas pictureBox of the application.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.storeVariables">
+            <summary>
+            Creates a dictionary object with key and values storing string and integer when variables and values is typed by the user. 
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.variableChecker">
+            <summary>
+            Stores boolean value; true if var is included in to programWindow of application and false if not typed. 
+            Default value is false assuming var is not typed yet.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.parameter1">
+            <summary>
+            Stores first parameter when string typed in programWindow is splitted using space or equals to sign.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.parameter2">
+            <summary>
+            Stores second parameter when string typed in programWindow is splitted using space or equals to sign.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.radius">
+            <summary>
+            Stores the value of radius for the circle to be drawn in the display canvas.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.pen">
+            <summary>
+            Object of <see cref="T:System.Drawing.Pen"/> <br/>Accesses methods of <see cref="T:System.Drawing.Pen"/>. Helps in drawing lines and
+            curves in the displayCanvas pictureBox of the application.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.pointX">
+            <summary>
+            Stores the integer value of  x-coordinate of the displayCanvas PictureBox of the application
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.pointY">
+            <summary>
+            Stores the integer value of  y-coordinate of the displayCanvas PictureBox of the application
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.errorList">
+            <summary>
+            Object of <see cref="T:System.Collections.ArrayList"/><br/>
+            Stores error messages that may occor in each line of text written in programWindow. 
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.newShape">
+            <summary>
+            Object of <see cref="T:GPLA_Assessment.Shape"/>. <br/>
+            Accesses the methods of <see cref="T:GPLA_Assessment.Shape"/> class from <see cref="T:GPLA_Assessment.Canvas"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.identiferObject">
+            <summary>
+            Object of <see cref="T:GPLA_Assessment.ShapeFactory"/>. <br/>
+            Access the methods and objects of <see cref="T:GPLA_Assessment.ShapeFactory"/> class from <see cref="T:GPLA_Assessment.Canvas"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.fill">
+            <summary>
+            Stores boolean values:<br/>
+            True when fill has been set to 'on' via programWindow/commandLineWindow, which helps in fill the objects to be drawn with the particular color of the pen.<br/>
+            False when fill has been set to 'off'
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.performIFObject">
+            <summary>
+            Object of <see cref="T:GPLA_Assessment.PerformIF"/><br/>
+            Accesses the methods of <see cref="T:GPLA_Assessment.PerformIF"/> class from the <see cref="T:GPLA_Assessment.Canvas"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.performLoopObject">
+            <summary>
+            Object of <see cref="T:GPLA_Assessment.PerformLoop"/> <br/>
+            Accesses the methods and objects of <see cref="T:GPLA_Assessment.PerformLoop"/> class from the <see cref="T:GPLA_Assessment.Canvas"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.ifConditionFlag">
+            <summary>
+            Stores boolean values: <br/>
+            True when if Condition typed in the Program Window is syntactically correct. <br/>
+            False is set as default and when the condition is not correct or matched.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.conditionNotMatched">
+            <summary>
+            Stores boolean values: <br/>
+            True when condition in the if statement typed in the Program Window is not matched logically and false otherwise.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.thenFlag">
+            <summary>
+            Stores boolean values: <br/>
+            True when 'then' keyword is encountered within the if statement typed in the Program Window and false otherwise.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.loopConditionFlag">
+            <summary>
+            Stores booean values: <br/>
+            True when loop condition typed in the Program Window is syntactically correct. <br/>
+            False is set as default and when the condition is not correct or matched.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.loopConditionMatched">
+            <summary>
+            Stores boolean values: <br/>
+            True when condition in the while statement typed in the Program Window is matched logically and false otherwise.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.whileCommand">
+            <summary>
+            Stores string value: <br/>
+            The while command line entered in the Program Window is stored in the variable in order to check while condition multiple times.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.whileFlag">
+            <summary>
+            Stores boolean values: <br/>
+            True until endloop is encountered in the Program Window and false when endloop after while condition is found.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.ifFlag">
+            <summary>
+            Stores boolean values: <br/>
+            True until endif is encountered in the Program Window and false when endif after if statement is found.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.parametersList">
+            <summary>
+            Stores the parameter values which stores every angle point of a polygon.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.methodFlag">
+            <summary>
+            Stores boolean values: true when method statement is encountered in the program window.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.performMethodObject">
+            <summary>
+            Object of <see cref="T:GPLA_Assessment.PerformMethod"/> class to access method within the class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.methodName">
+            <summary>
+            Stores string value which stores the name of method entered by the user.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Canvas.penColor">
+            <summary>
+            Stores the name of <see cref="T:System.Drawing.Color"/> which will be used in pen to draw objects of different colors. 
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.#ctor(System.Drawing.Graphics)">
+            <summary>
+            Method: Sets initial value of (x,y) coordiantes to (0,0). Sets default <see cref="F:GPLA_Assessment.Canvas.penColor"/>to Black and deault value of <see cref="F:GPLA_Assessment.Canvas.fill"/> to false/off.
+            </summary>
+            <param name="g">Object of <see cref="T:System.Drawing.Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.ClearScreen">
+            <summary>
+            Method: Triggered when 'clear' command is typed in the command Line Window of the application. <br/>
+            Clears the graphical objects drawn in the drawing surface and sets the background color to white.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.MoveTo(System.Int32,System.Int32)">
+            <summary>
+            Method: Triggered when 'moveTo' command, along with x and y coordinate, is typed along with the values of x and y coordinate.<br/>
+            Sets the value of x and y coordinated to the specified values which eventually moves the position of cursor to the specified point in the drawing area. 
+            </summary>
+            <param name="x_coordinate"> Holds the new value of x-coordinate which is the new location of cursor in the drawing area. </param>
+            <param name="y_coordinate"> Holds the new value of y-coordinate which is the new location of cursor in the drawing area. </param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.ResetPen">
+            <summary>
+            Method: Triggered when 'clear' command is typed in the command Line Window of the application.
+            Sets the value of x and y coordinates to (0,0) which is to reset the current position of the cursor in the drawing area to (0,0) 
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.DrawLine(System.Drawing.Color,System.Int32,System.Int32)">
+            <summary>
+            Method: Triggered when drawTo command, along with x and y coordinate, is typed in the application<br/>
+            Draws line, with specified pen color, from the current position of cursor to the specified position of (x,y).
+            </summary>
+            <param name="newColor"> Holds the Color of line to be drawn.</param>
+            <param name="x_coordinate">Holds the x-coordinate of the end point of the line.</param>
+            <param name="y_coordinate">Holds the y-coordinate of the end point of the line.</param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.DrawRectangle(System.Drawing.Color,System.Boolean,System.Int32,System.Int32)">
+             <summary>
+             Method: Triggered when rectangle command, along with length and breadth, is typed in the application <br/>
+             Calls a method which identifys the shape first then calls other methods :
+             <list type="bullet"> Sets the Color, fill value, (x,y) of cursor, and length, breadth of rectangle. </list>
+            <list type="bullet">Draws rectangle, in the displayCanvas, using the values set.</list>
+             </summary>
+             <param name="newColor">Holds the Color of pen which draws the rectangle.</param>
+             <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+             <param name="length"> Holds the value of length of the rectangle</param>
+             <param name="breadth">Holds the value of breadth of the rectangle</param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.DrawPolygon(System.Drawing.Color,System.Boolean,System.String[])">
+            <summary>
+            
+            </summary>
+            
+            <param name="newColor">Holds the Color of pen which draws the polygon</param>
+            <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+            <param name="parameters"> The list of points of a polygon is stored.</param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.DrawCircle(System.Drawing.Color,System.Boolean,System.Int32)">
+             <summary>
+             Method: Triggered when circle command, along with radius, is typed in the application <br/>
+              Calls a method which identifys the shape first then calls other methods :
+             <list type="bullet"> Sets the Color, fill value, (x,y) of cursor, and radius of the circle. </list>
+            <list type="bullet"> Draws circle, in the displayCanvas, using the values set.</list>
+             </summary>
+             <param name="newColor">Holds the Color of pen which draws the circle</param>
+             <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+             <param name="radius">Holds the value of radius of the circle</param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.DrawTriangle(System.Drawing.Color,System.Boolean)">
+             <summary>
+             Method: Triggered when triangle command is typed in the application <br/>
+              Calls a method which identifys the shape first then calls other methods :
+             <list type="bullet"> Sets the Color, fill value, (x,y) of cursor, and other two verticies of the triangle. </list>
+            <list type="bullet"> Draws triangle , in the displayCanvas, using the values set.</list>
+             </summary>
+             <param name="newColor">Holds the Color of pen which draws the triangle</param>
+             <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.clearErrorList">
+            <summary>
+            Method: Erases all items which are stored in the ArrayList: <see cref="F:GPLA_Assessment.Canvas.errorList"/>
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.clearDictionary">
+            <summary>
+            Method: Erases all items which are stored in the Dictionary: <see cref="!:sto"/>
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.splitVariableExpression(System.String)">
+            <summary>
+            Method: Triggered when enteredCode has var and expression separated by space and are required to be split.
+            Splits the var and expression separated by space as different item and saves them into an array of string.
+            </summary>
+            <param name="varExpression"> Holds the string value which contains var and expression separated by space</param>
+            <returns>The string array which contains var and expression separate values as different items</returns>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.splitExpression(System.String)">
+            <summary>
+            Method: Triggered when expression has values separated by '=' and are required to be split.
+            Splits the parameters separated by '=' as a different item and saves them into an array of string.
+            </summary>
+            <param name="expression"> Holds the string value of expression which are separated by '=' </param>
+            <returns> The string array which contains expression's separated values as different items.</returns>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.CommandSplitter(System.String)">
+            <summary>
+            Method: Triggered when enteredCode has command and parameters separated by space and are required to be split.
+            Splits the command and parameters separated by space as different item and saves them into an array of string.
+            </summary>
+            <param name="enteredCode"> Holds the string value which contains command and parameters separated by space</param>
+            <returns>The string array which contains commands and parameters separate values as different items</returns>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.ParameterSplitter(System.String)">
+            <summary>
+            Method: Triggered when parameters has values separated by ',' and are required to be split.
+            Splits the parameters separated by ',' as a different item and saves them into an array of string.
+            </summary>
+            <param name="parameters">Holds the string value of parameters which are separated by ',' </param>
+            <returns> The string array which contains parameter's separated values as different items.</returns>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.programReader(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Method Triggered when some text is written in the program Windown and run command is pressed. <br/>
+            Checks the entered Code line by line for built in commands like 'var', 'if statement', 'while statement' and also performs variable operations like (+), (-), (*) and (/)
+            </summary>
+            <param name="enteredCode">Holds each line of command retrieved from the program Window of the application</param>
+            <param name="lineCounter">Holds the number of line of the text</param>
+            <param name="syntaxButton">Holds the boolean value of syntaxButton which confirms if syntaxButton was pressed in the application</param>
+        </member>
+        <member name="M:GPLA_Assessment.Canvas.OldCommands(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Method Triggered when shapes and other drawing statements including moveto, drawto, triangle, circle, rectangle, etc. are to be processed.<br/>
+            Splits the string and stores their value in variables. Checks the string then: Implements <br/><see cref="M:GPLA_Assessment.Canvas.DrawLine(System.Drawing.Color,System.Int32,System.Int32)"/>, <see cref="M:GPLA_Assessment.Canvas.DrawRectangle(System.Drawing.Color,System.Boolean,System.Int32,System.Int32)"/>
+            <see cref="M:GPLA_Assessment.Canvas.DrawCircle(System.Drawing.Color,System.Boolean,System.Int32)"/>, <see cref="M:GPLA_Assessment.Canvas.DrawTriangle(System.Drawing.Color,System.Boolean)"/> being based on the conditions. 
+            </summary>
+            <param name="enteredCode">Holds each line of command retrieved from the program Window of the application</param>
+            <param name="lineCounter">Holds the number of line of the text</param>
+            <param name="syntaxButton">Holds the boolean value of syntaxButton which confirms if syntaxButton was pressed in the application</param>
+        </member>
+        <member name="T:GPLA_Assessment.Circle">
+            <summary>
+            Performs every tasks related to the graphical shape Triangle in the application window. 
+            Extends <see cref="T:GPLA_Assessment.Shape"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Circle.radius">
+            <summary>
+            Holds the integer value of radius of the circle which is obtained from parameter list.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Circle.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Circle.set(System.Drawing.Color,System.Boolean,System.Int32[])">
+            <summary>
+            Overrides the set method of Shape class<br/>
+            Sets the Color, fill value, (x,y) of cursor, and radius of the circle. 
+            </summary>
+            <param name="newColor">Holds the Color of pen which draws the circle</param>
+            <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+            <param name="list">Holds the value of radius of the circle</param>
+        </member>
+        <member name="M:GPLA_Assessment.Circle.draw(System.Drawing.Graphics)">
+            <summary>
+             Overrides the draw method of Shape class <br/>
+             Method: Triggered when circle command along with radius is typed in the application<br/>
+             Checks if the fill is on and fills the ellipse and draws ellipse with entered radius from the current position of x and y coordinate.
+             </summary>
+             <param name="g">Object of <see cref="T:System.Drawing.Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:GPLA_Assessment.Form1" -->
+        <member name="F:GPLA_Assessment.Form1.bitmapCanvas">
+            <summary>
+            Object of <see cref="T:System.Drawing.Bitmap"/>: Holds all the contents, that is to be drawn in the canvas, before it is displayed in the canvas. 
+            It's size has been set to x-axis = 500 and y-axis = 500 
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Form1.canvasObject">
+            <summary>
+            Object of <see cref="T:GPLA_Assessment.Canvas"/>: Allows <see cref="T:GPLA_Assessment.Form1"/> to use the methods and codes of <see cref="T:GPLA_Assessment.Canvas"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Form1.syntaxButton">
+            <summary>
+            Stores boolean value. This is turned on while syntaxButton is pressed and turned off when the programWindow is error free.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.#ctor">
+            <summary>
+            Default Constructor: Initializes components which displays the Form and Graphical contents of the application.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.exitToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Method: Triggered  when 'Exit' subMenu is clicked in the application. <br/>
+            Exits the application
+            </summary>
+            <param name="sender">Object: Instantiated to send signal when 'Exit' menu is clicked.</param>
+            <param name="e">Handles events that are to be performed in the application when 'Exit' subMenu is clicked</param>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.aboutToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Method: Triggered when 'About' subMenu is clicked in the application. <br/>
+            Displays a message box which contains the information about the application 
+            </summary>
+            <param name="sender">Object: Instantiated to send signal when the 'About' is clicked.</param>
+            <param name="e">Handles events that are to be performed in the application when 'About' subMenu is clicked</param>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.userGuidelinesToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Method: Triggered when 'User Guidelines' subMenu is clicked in the application. <br/>
+            Displays message box which contains the user guidelines, which will help the user to use the application, 
+            </summary>
+            <param name="sender">Object: Instantiated to send signal when 'User Guidelines' menu is clicked.</param>
+            <param name="e">Handles events that are to be performed in the application when 'User Guidelines' subMenu is clicked</param>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.programReader(System.String)">
+             <summary>
+             Method: <list type="bullet">Checks the value stored in the parameter and calls <see cref="M:GPLA_Assessment.Canvas.ClearScreen"/> if 'clear' and <see cref="M:GPLA_Assessment.Canvas.ResetPen"/> if 'reset'</list>
+                     <list type="bullet">Retrieves multiple line of code from programWindow and calls <see cref="M:GPLA_Assessment.Canvas.programReader(System.String,System.Int32,System.Boolean)"/> if 'run'. </list>
+                     <list type="bullet">Else, calls <see cref="M:GPLA_Assessment.Canvas.programReader(System.String,System.Int32,System.Boolean)"/> to check if the code is valid and performs tasks otherwise.</list>
+            </summary>
+             <param name="enteredCode">The command retrieved from the Command Line Window of the application</param>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.commandLineWindow_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+             <summary>
+              Method: Triggered when key is pressed in the command Line Window of the application
+                             <list type="bullet">Retrieves the text written in the Command Line Window and calls the programReader method along with command as parameter. </list>
+                             <list type="bullet">Retrieve the contents of ArrayList: errorList created in the <see cref="T:GPLA_Assessment.Canvas"/> class and displays it's contents in the errorDisplayArea.</list>
+             </summary>
+            <param name="sender">Object: Instantiated to send signal when key has been pressed in the Command Line Window.</param>
+             <param name="e">Handles events that are to be performed in the application when key is pressed in the Command Line Window.</param>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.displayCanvas_Paint(System.Object,System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Method: Creates object of <see cref="T:System.Drawing.Graphics"/> and draws various objects/images in the <see cref="F:GPLA_Assessment.Form1.bitmapCanvas"/>
+            </summary>
+            <param name="sender">Object: Instantiated to send signal when Paint event is performed in displayCanvas Window.</param>
+            <param name="e">Handles events that are to be performed in the application when key is pressed in displayCanvas Window</param>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.checkSyntaxButton_Click(System.Object,System.EventArgs)">
+            <summary>
+             Method: Triggered when check Syntax button is clicked in the application
+                            <list type="bullet">Retrieves the items: errors in the ArrayList: errorList and appends it to the errorDisplayArea</list>
+                            <list type="bullet">Checks if there are any error in the ArrayList: errorList and appends proceed if the are no errors.</list>
+                            <list type="bullet">Retrieves multiple line of codes from programWindow and calls the <see cref="M:GPLA_Assessment.Canvas.programReader(System.String,System.Int32,System.Boolean)"/> method, 
+                             of <see cref="T:GPLA_Assessment.Canvas"/> class along with each line retrived and lineCounterIndex as parameter. </list>
+            </summary>
+            <param name="sender">Object: Instantiated to send signal when Check Syntax button is clicked in the application.</param>
+            <param name="e">Handles events that are to be performed in the application when Check Syntax button is clicked in the application. </param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GPLA_Assessment.Form1.loadProgramMenu_Click(System.Object,System.EventArgs)" -->
+        <member name="M:GPLA_Assessment.Form1.saveProgramMenu_Click(System.Object,System.EventArgs)">
+            <summary>
+            Method: Triggered when Save Program subMenu is clicked in the application
+            Opens a dialog box to choose path and filename. Creates the file in the destination folder
+            then retrieves the text written in programWindow and stores every line in the file.
+            </summary>
+            <param name="sender">Object: Instantiated to send signal when 'Save Program' subMenu is clicked in the application.</param>
+            <param name="e">Handles events that are to be performed in the application when 'Save Program' subMenu is clicked in the application. </param>
+        </member>
+        <member name="F:GPLA_Assessment.Form1.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:GPLA_Assessment.Form1.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:GPLA_Assessment.InvalidCommand">
+            <summary>
+            InvalidCommand class which extends Exception class. Used to throw user defined error which can be caught later.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.InvalidCommand.#ctor">
+            <summary>
+             Default constructor.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.InvalidCommand.#ctor(System.String)">
+            <summary>
+            Method triggered when throws InvalidCommand is entered in the program.
+            </summary>
+            <param name="message"> The error message typed along when the error is actually encountered.</param>
+        </member>
+        <member name="T:GPLA_Assessment.PerformIF">
+            <summary>
+            Perform IF class which checks weather the if statement in the program windown is syntactically and logically correct.<br/>
+            Implements methods <see cref="M:GPLA_Assessment.PerformIF.checkIfCommand(System.String,System.Int32)"/> and <see cref="!:executeIFCommand(string, string)"/>
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformIF.ifCommandFlag">
+            <summary>
+            Stores boolean values: <br/>
+            True when if command has correct syntax and logic and false otherwise.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformIF.variableValue">
+            <summary>
+            Stores integer value: <br/>
+            Stores the value entered along with the expression of if statement condition.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformIF.variableName">
+            <summary>
+            Stores integer value: <br/>
+            Stores the variable's value from data dictionary after comparing with variable entered along with the if statement condition.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.PerformIF.checkIfCommand(System.String,System.Int32)">
+            <summary>
+            Method triggered when if keyword is encountered in the program window.<br/>
+            Checks if the operator in the if statement is correct and also checks the syntax of if command.
+            Also implements a method <see cref="!:executeIFCommand(string, string)"/>
+            </summary>
+            <param name="enteredCode">The line of code which contains if statement retrieved from program window</param>
+            <param name="lineCounter">The number of line in which if statement was found.</param>
+            <returns> True when condition within if statement is correct and when if syntax is correct and false otherwise.</returns>
+        </member>
+        <member name="M:GPLA_Assessment.PerformIF.executeIFCommand(System.String,System.String,System.Int32)">
+            <summary>
+            Method Triggered when if condition and if operator is retrieved. <br/>
+            Checks if the condition in if statement is true.
+            </summary>
+            <param name="ifOperator"> The operator retrieved from the condition expression witten along with if statement</param>
+            <param name="ifCondition"> The retrieved condition expression written along with the if statement</param>
+            <returns> True when if condition expression is logically correct and false otherwise. </returns>
+        </member>
+        <member name="T:GPLA_Assessment.PerformLoop">
+            <summary>
+            Perform Loop class which performs task underneath the while statement until the endloop is not found.<br/>
+            Implements methods <see cref="!:checkLoopCommand(string)"/>, <see cref="!:executeLoopCommand(string, string)"/>
+            , <see cref="M:GPLA_Assessment.PerformLoop.executeLoop(System.Boolean,System.Boolean,System.String,System.String,System.Int32,System.Boolean,System.Collections.ArrayList)"/> and <see cref="M:GPLA_Assessment.PerformLoop.runLoop(System.Int32,System.Boolean,System.String,System.Collections.ArrayList)"/> methods.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformLoop.loopCommands">
+            <summary>
+            ArrayList object: <br/>
+            Stores all the lines underneath the while command until the endloop command is encountered.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformLoop.loopConditionFlag">
+            <summary>
+            Stores boolean values:<br/>
+            True when loop condition along with the while statement is logically correct and false otherwise.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformLoop.loopCommandFlag">
+            <summary>
+            Stores boolean values: <br/>
+            True when while loop command has a valid operator and false otherwise.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformLoop.variableValue">
+            <summary>
+            Stores integer value: <br/>
+            Stores the value entered along with the expression of while statement condition.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformLoop.variableName">
+            <summary>
+            Stores integer value: <br/>
+            Stores the variable's value from data dictionary after comparing with variable entered along with the while statement condition.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.PerformLoop.checkLoopCommand(System.String,System.Int32)">
+            <summary>
+            Method triggered when while keyword id encountered in the program window <br/>
+            Checks if the operator in the while statement is correct and also checks the syntax of while command.
+            </summary>
+            <param name="enteredCode">The line of code which contains if statement retrieved from program window</param>
+            <param name="lineCounter">Holds the number of line of the text</param>
+            <returns> True when condition within the while statement is correct and when while syntax is correct and false otherwise.</returns>
+        </member>
+        <member name="M:GPLA_Assessment.PerformLoop.executeLoopCommand(System.String,System.String,System.Int32)">
+            <summary>
+            Method Triggered when loop Condition and loop operator is retrieved from while statement. <br/>
+            Checks if the condition in th while statement is true.
+            </summary>
+            <param name="loopOperator"> The operator retrieved from the condition expression witten along with while statement</param>
+            <param name="loopCondition"> The retrieved condition expression written along with the while statement</param>
+            <param name="lineCounter">Holds the number of line of the text</param>
+            <returns> True when while condition expression is logically correct and false otherwise. </returns>
+        </member>
+        <member name="M:GPLA_Assessment.PerformLoop.executeLoop(System.Boolean,System.Boolean,System.String,System.String,System.Int32,System.Boolean,System.Collections.ArrayList)">
+            <summary>
+            Method triggered when while condition is still on but endloop command is not yet encountered in the program window. <br/>
+            Checks if the endloop command is encountered and performs loop by calling <see cref="M:GPLA_Assessment.PerformLoop.runLoop(System.Int32,System.Boolean,System.String,System.Collections.ArrayList)"/> method afterwards.
+            </summary>
+            <param name="whileFlag"> The boolean value which is true when while command is encountered untill the endloop command is encountered. </param>
+            <param name="loopConditionMatched">The boolean value which is true when condition in the while statement typed in the Program Window is matched logically and false otherwise.</param>
+            <param name="whileCommand">The while command line entered in the Program Window is stored in the variable in order to check while condition multiple times.</param>
+            <param name="enteredCode">Holds each line of command retrieved from the program Window of the application</param>
+            <param name="lineCounter">Holds the number of line of the text</param>
+            <param name="syntaxButton">Holds the boolean value of syntaxButton which confirms if syntaxButton was pressed in the application</param>
+            <param name="canvasList">A temporary ArrayList which stores all the canvas objects which helps in drawing object in the display canvas.</param>
+            <returns> True when while condition is true and endloop is not encountered and false when endloop is found and all loop commands are executed</returns>
+        </member>
+        <member name="M:GPLA_Assessment.PerformLoop.runLoop(System.Int32,System.Boolean,System.String,System.Collections.ArrayList)">
+            <summary>
+            Method triggered when the endloop command is encountered.<br/>
+            Executes the loop statements stored in the arraylist until the while condition is matched.
+            </summary>
+            <param name="lineCounter">Holds the number of line of the text</param>
+            <param name="syntaxButton">Holds the boolean value of syntaxButton which confirms if syntaxButton was pressed in the application</param>
+            <param name="whileCommand">The while command line entered in the Program Window is stored in the variable in order to check while condition multiple times.</param>
+            <param name="canvasList">A temporary ArrayList which stores all the canvas objects which helps in drawing object in the display canvas.</param>
+        </member>
+        <member name="T:GPLA_Assessment.PerformMethod">
+            <summary>
+            PerformMethod class which implements <see cref="!:identifyMethod(string, bool)"/> and <see cref="M:GPLA_Assessment.PerformMethod.storeMethodCommands(System.String)"/> methoods 
+            which checks if the method statement is encountered and adds all the code under the method statement to arraylist until endmethod statement is encountered.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformMethod.methodName">
+            <summary>
+            Stores String value:<br/>
+            Stores name of the method entered in the program Window.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformMethod.methodParameters">
+            <summary>
+            Stores string value:<br/>
+            Stores the name of parameteres entered along with the method command in the program window.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformMethod.methodFlag">
+            <summary>
+            Stores boolean value.
+            True when method is encountered in the program window and false when endmethod command is encountered.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformMethod.methodCommands">
+            <summary>
+            ArrayList object which stores all the commands that comes under the method tag until the endmethod statement is encountered.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.PerformMethod.splittedParameters">
+            <summary>
+            String array which stores the splitted parameters passed along with the method statement.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GPLA_Assessment.PerformMethod.identifyMethod(System.String,System.Boolean,System.Int32)" -->
+        <member name="M:GPLA_Assessment.PerformMethod.storeMethodCommands(System.String)">
+            <summary>
+            Method triggered when method statement is already encountered but endmethod is not encountered yet.
+            Adds all the code underneath the method statement into a arraylist to retrieve later.
+            </summary>
+            <param name="enteredCode">Holds each line of command retrieved from the program Window of the application</param>
+            <returns> True when method is still on and returns False when endmethod command is encountered. </returns>
+        </member>
+        <member name="T:GPLA_Assessment.Polygon">
+            <summary>
+            Performs every tasks related to the graphical shape Polygon in the application window. 
+            Extends <see cref="T:GPLA_Assessment.Shape"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Polygon.parameters">
+            <summary>
+            Integer array which holds the list of parameters containing points of the polygon
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Polygon.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Polygon.set(System.Drawing.Color,System.Boolean,System.Int32[])">
+            <summary>
+            Overrides the set method of Shape class<br/>
+            Sets the Color, fill value, (x,y) of cursor, and all the sides of the polygon
+            </summary>
+            <param name="newColor">Holds the Color of pen which draws the rectangle.</param>
+            <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+            <param name="list"> Holds the list of value of sides of the polygon</param>
+        </member>
+        <member name="M:GPLA_Assessment.Polygon.draw(System.Drawing.Graphics)">
+            <summary>
+             Overrides the draw method of Shape class <br/>
+             Method: Triggered when polygon command along with its points is typed in the application<br/>
+             Checks if the fill is on and fills the polygon and draws polygon with entered sides from the current position of x and y coordinate.
+             </summary>
+             <param name="g">Object of <see cref="T:System.Drawing.Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
+        </member>
+        <member name="T:GPLA_Assessment.Program">
+            <summary>
+            The main class of the program which run the application
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Program.Main">
+            <summary>
+            The main entry point for the application. <br/>Enables the graphical application window - Windows Form to display when the program is run.
+            </summary>
+        </member>
+        <member name="T:GPLA_Assessment.Rectangle">
+            <summary>
+            Performs every tasks related to the graphical shape Rectangle in the application window. 
+            Extends <see cref="T:GPLA_Assessment.Shape"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Rectangle.length">
+            <summary>
+            Holds the integer value of length of the rectangle which is obtained from parameter list.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Rectangle.breadth">
+            <summary>
+            Holds the integer value of breadth of the rectangle which is obtained from parameter list.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Rectangle.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Rectangle.set(System.Drawing.Color,System.Boolean,System.Int32[])">
+            <summary>
+            Overrides the set method of Shape class<br/>
+            Sets the Color, fill value, (x,y) of cursor, and length, breadth of rectangle. 
+            </summary>
+            <param name="newColor">Holds the Color of pen which draws the rectangle.</param>
+            <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+            <param name="list"> Holds the list of value of length and breadth of the rectangle</param>
+        </member>
+        <member name="M:GPLA_Assessment.Rectangle.draw(System.Drawing.Graphics)">
+            <summary>
+             Overrides the draw method of Shape class <br/>
+             Method: Triggered when rectangle command along with length and breadth is typed in the application<br/>
+             Checks if the fill is on and fills the rectangle and draws rectangle with entered length and breadth from the current position of x and y coordinate.
+             </summary>
+             <param name="g">Object of <see cref="T:System.Drawing.Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
+        </member>
+        <member name="T:GPLA_Assessment.Shape">
+            <summary>
+            Receives values of shapes, then sets color, fill, and other parameters of that particular shape then<br/> calls a method which helps to draw that particular shape.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Shape.penColor">
+            <summary>
+            Stores the name of <see cref="T:System.Drawing.Color"/> which will be used in pen to draw objects of different colors.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Shape.fill">
+            <summary>
+            Stores boolean values:<br/>
+            True when fill has been set to 'on' via programWindow/commandLineWindow, which helps in fill the objects to be drawn with the particular color of the pen.<br/>
+            False when fill has been set to 'off'
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Shape.pointX">
+            <summary>
+            Stores the integer value of  y-coordinate of the displayCanvas PictureBox of the application
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Shape.pointY">
+            <summary>
+            Stores the integer value of  y-coordinate of the displayCanvas PictureBox of the application
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Shape.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Shape.setX(System.Int32)">
+            <summary>
+             Refers the value of 'pointX' to the current object of the method to set its current value
+            </summary>
+            <param name="pointX"> Holds the value of the current position of x-coordinate </param>
+        </member>
+        <member name="M:GPLA_Assessment.Shape.getX">
+            <summary>
+            Gets the current value of x-coordinate from the user and returns its value.
+            </summary>
+            <returns> The current value of the current position of x-coordinates</returns>
+        </member>
+        <member name="M:GPLA_Assessment.Shape.#ctor(System.Drawing.Color,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Method: Triggered when shape command (rectangle, circle, triangle), along with parameters, is typed in the application <br/>
+            Refers the value of parameters to the current object of the method
+            </summary>
+            <param name="penColor">Holds the Color of pen which draws the rectangle.</param>
+            <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+            <param name="pointX">Holds the value for x-coordinate</param>
+            <param name="pointY">Holds the value for y-coordinate</param>
+        </member>
+        <member name="M:GPLA_Assessment.Shape.draw(System.Drawing.Graphics)">
+            <summary>
+            Method: Triggered when shape command along with parameters is typed in the application<br/>
+            Passes the obligation to implement them to the derieved classes by declaring them as abstract
+            </summary>
+            <param name="g">Object of <see cref="T:System.Drawing.Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
+        </member>
+        <member name="M:GPLA_Assessment.Shape.set(System.Drawing.Color,System.Boolean,System.Int32[])">
+            <summary>
+            Sets the penColor, fill and list of parameters and refers their to the current object of the method
+            </summary>
+            <param name="penColor">Holds the Color of pen which draws the rectangle.</param>
+            <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+            <param name="list">Holds verticies/ radius/ length,breath to be set for the shape. It has values in accordance to the shape </param>
+        </member>
+        <member name="T:GPLA_Assessment.ShapeFactory">
+            <summary>
+            Implements a method which creates and returns the object of the shape being based on the command entered as parameter. 
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.ShapeFactory.getShape(System.String)">
+            <summary>
+            Method: Triggered when the object of Rectangle/Triangle/Circle class is required. 
+            Creates object of Rectangle/Triangle/Circle class if the parameter passed matches the Shape name. 
+            </summary>
+            <param name="shapeType">Holds the name of shape of which object is to be created.</param>
+            <returns> The object of particular shape which was passed as a parameter. </returns>
+        </member>
+        <member name="T:GPLA_Assessment.Triangle">
+            <summary>
+            Performs every tasks related to the graphical shape Triangle in the application window. 
+            Extends <see cref="T:GPLA_Assessment.Shape"/> class.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Triangle.tgPoint1">
+            <summary>
+            Holds the integer value, which helps in creating vertices of triangle, which is obtained from parameter list.
+            </summary>
+        </member>
+        <member name="F:GPLA_Assessment.Triangle.tgPoint2">
+            <summary>
+            Holds the integer value, which helps in creating vertices of triangle, which is obtained from parameter list.
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Triangle.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:GPLA_Assessment.Triangle.set(System.Drawing.Color,System.Boolean,System.Int32[])">
+            <summary>
+            Overrides the set method of Shape class<br/>
+            Sets the Color, fill value, (x,y) of cursor, and other two verticies of the triangle. 
+            </summary>
+            <param name="newColor">Holds the Color of pen which draws the triangle</param>
+            <param name="fill">Holds the boolean value of fill - which is true when fill is on or false otherwise</param>
+        </member>
+        <member name="M:GPLA_Assessment.Triangle.draw(System.Drawing.Graphics)">
+            <summary>
+             Overrides the draw method of Shape class <br/>
+             Method: Triggered when triangle command is typed in the application<br/>
+             Checks if the fill is on and fills the triangle and draws triangle from the current position of x and y coordinate.
+             </summary>
+             <param name="g">Object of <see cref="T:System.Drawing.Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
+        </member>
+        <member name="T:GPLA_Assessment.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:GPLA_Assessment.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:GPLA_Assessment.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
