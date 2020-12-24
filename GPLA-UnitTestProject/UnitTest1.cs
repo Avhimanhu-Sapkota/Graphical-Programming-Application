@@ -195,12 +195,12 @@ namespace GPLA_Unit_Test
             Canvas testCanvasObject = new Canvas();
 
             // Calls programReader methods by passing 'Square' as the parameter, which is supposed to add error to the arrayList: errorList.
-            testFormObject.programReader("Square");
+            testFormObject.programReader("Square 1x0");
 
             /*
             * Iterates to retrieve the contents of ArrayList: errorList created in the Canvas class and performs the test.
             */
-            foreach (String eachError in testCanvasObject.errorList)
+            foreach (String eachError in Canvas.errorList)
             {
                 // Performs Unit Tests on areEqual tests using retrieved error and expected error.
                 Assert.AreEqual(eachError, expectedError);
@@ -215,7 +215,7 @@ namespace GPLA_Unit_Test
         public void TestErrorMessage2()
         {
             // Initializes variable with expected Output.
-            String expectedError = "ERROR!!! AT LINE 1. Please Enter Two Numeric Values for coordinates.";
+            String expectedError = "ERROR!!! AT LINE 1. Please Enter Valid Command.";
 
             // Object of Form1 class to access methods of Form1 Class.
             Form1 testFormObject = new Form1();
@@ -224,12 +224,12 @@ namespace GPLA_Unit_Test
             Canvas testCanvasObject = new Canvas();
 
             // Calls programReader methods by passing 'Rectangle' as the parameter, which is supposed to add error to the arrayList: errorList.
-            testFormObject.programReader("Rectangle 10");
+            testFormObject.programReader("Rectangle 1x0");
 
             /*
             * Iterates to retrieve the contents of ArrayList: errorList created in the Canvas class and performs the test.
             */
-            foreach (String eachError in testCanvasObject.errorList)
+            foreach (String eachError in Canvas.errorList)
             {
                 // Performs Unit Tests on areEqual tests using retrieved error and expected error.
                 Assert.AreEqual(eachError, expectedError);

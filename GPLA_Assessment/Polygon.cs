@@ -15,13 +15,9 @@ namespace GPLA_Assessment
     class Polygon : Shape
     {
         /// <summary>
-        /// Holds the integer value of length of the rectangle which is obtained from parameter list.
+        /// Integer array which holds the list of parameters containing points of the polygon
         /// </summary>
-        int length;
-        /// <summary>
-        /// Holds the integer value of breadth of the rectangle which is obtained from parameter list.
-        /// </summary>
-        int breadth;
+        int[] parameters;
 
         /// <summary>
         /// Default Constructor
@@ -40,10 +36,9 @@ namespace GPLA_Assessment
         public override void set(Color penColor, bool fill, params int[] list)
         {
             base.set(penColor, fill, list[0], list[1]);
-            // Refers the value of list[2] to the current object of the method.
-            this.length = list[2];
-            // Refers the value of list[3] to the current object of the method.
-            this.breadth = list[3];
+
+            // Sets the parameters values from list into the array.
+            parameters = list;
         }
 
         ///<summary>
@@ -54,23 +49,38 @@ namespace GPLA_Assessment
         /// <param name="g">Object of <see cref="Graphics"/>. Helps to draw graphical contents in the displayCanvas pictureBox of the application.</param>
         public override void draw(Graphics g)
         {
+            // Creates array of point and stores all the verticies of triangle in the array which is required to draw a triangle in the displayCanvas.
+            Point[] polygonPoints = new Point[parameters.Length/2];
+
+            // Integer index counter.
+            int index = 0;
+
+            // Iterates the loop to add new point into polygonpoints array.
+            for (int i=0; i<parameters.Length; i += 2)
+            {
+                // Sets the points of polygon into polygon points.
+                polygonPoints[index] = new Point(parameters[i], parameters[i + 1]);
+                index++;
+            }
+
             // Object of Pen which accesses methods of Pen class.
             // Helps in drawing lines and shapes in the displayCanvas pictureBox of the application.
             Pen pen = new Pen(penColor, 1);
 
             /*
-             * Checks if fill is on (true) and fills the rectangle at the given point within the area of polygon.
+             * Checks if fill is on (true) and fills the triangle at the given point within the area of triangle.
              */
             if (fill == true)
             {
-                // Object of SolidBrush which creates brush to fill the polygon
+                // Object of SolidBrush which creates brush to fill the triangle
                 SolidBrush brush = new SolidBrush(penColor);
 
-                // Fills the rectangle at the given point within the area of polygon.
-                g.FillRectangle(brush, pointX, pointY, length, breadth);
+                //Fills the triangle at the given point within the area of triangle.
+                g.FillPolygon(brush, polygonPoints);
             }
-            // Draws the polygon at the given point with the entered sides.
-            g.DrawRectangle(pen, pointX, pointY, length, breadth);
+
+            // Draws the triangle at the given point with the points in the point array: trianglePoints.
+            g.DrawPolygon(pen, polygonPoints);
         }
     }
 }

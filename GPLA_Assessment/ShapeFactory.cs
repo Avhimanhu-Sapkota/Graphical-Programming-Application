@@ -20,7 +20,7 @@ namespace GPLA_Assessment
         /// <returns> The object of particular shape which was passed as a parameter. </returns>
         public Shape getShape(String shapeType)
         {
-            /// Trims the spaces before and after the text and changes the alphabets to lowercase. 
+            // Trims the spaces before and after the text and changes the alphabets to lowercase. 
             shapeType = shapeType.Trim().ToLower();
 
             /*

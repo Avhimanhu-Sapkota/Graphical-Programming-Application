@@ -68,7 +68,7 @@ namespace GPLA_Assessment
         /// <param name="e">Handles events that are to be performed in the application when 'About' subMenu is clicked</param>
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /// Holds the message to be displayed in the message box
+            // Holds the message to be displayed in the message box
             String message = "This application has been developed to produce a simplified programming " +
                 "language and environment.The application is an assignment designed by " +
                 "Leeds Beckett University for Level 6 Students who are studying " +
@@ -78,10 +78,10 @@ namespace GPLA_Assessment
                 "\nAvhimanhu Sapkota\nUniversity ID: 77202323\nThe British College\n\n" +
                 "Copyright © 2020. All rights reserved.";
 
-            /// Holds the title of the message Box
+            // Holds the title of the message Box
             String title = "About - Graphical Programming Language Application";
 
-            /// Displays Message box along with the title and message
+            // Displays Message box along with the title and message
             MessageBox.Show(message, title);
         }
 
@@ -93,7 +93,7 @@ namespace GPLA_Assessment
         /// <param name="e">Handles events that are to be performed in the application when 'User Guidelines' subMenu is clicked</param>
         private void userGuidelinesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /// Holds the message to be displayed in the message box
+            // Holds the message to be displayed in the message box
             String message = "Application Interface: \n\nDisplay Canvas: It is a display panel or drawing area where you will be able to view your outputs in accordance " +
                 "to the commands you type in Program Window and Command Line Window.\n\nProgram Window: A text area where you can type your programming codes which will allow " +
                 "you to perform various tasks. This window supports multiple line of codes. It only supports some command prompts listed below. If you fail to type commands " +
@@ -118,7 +118,7 @@ namespace GPLA_Assessment
                 "is called from program.\n18. method MethodName(parameter list) -creates a method of specified name along with passed parameters and performs code only when " +
                 "methodName is called from program." ;
 
-            /// Holds the title of the message Box
+            // Holds the title of the message Box
             String title = "User Guidelines - Graphical Programming Language Application";
 
             // Displays Message box along with the title and message
@@ -146,10 +146,10 @@ namespace GPLA_Assessment
             
             else if (enteredCode.Equals("run"))
             {
-                /// Creates an array of string, retrieves the text from programWindow and stores the lines. 
+                // Creates an array of string, retrieves the text from programWindow and stores the lines. 
                 string[] multilineCodes = programWindow.Lines;
 
-                /// Index to count the line number of the text
+                // Index to count the line number of the text
                 int index = 1;
 
                 /*
@@ -199,7 +199,7 @@ namespace GPLA_Assessment
                 // Calls clearDictionary() method of Canvas class.
                 canvasObject.clearDictionary();
 
-                /// Retrieves and Stores the text written in Command Line Window
+                // Retrieves and Stores the text written in Command Line Window
                 String command = commandLineWindow.Text;
 
                 // Trims the spaces before and after the text and changes the alphabets to lowercase.
@@ -230,7 +230,7 @@ namespace GPLA_Assessment
         /// <param name="e">Handles events that are to be performed in the application when key is pressed in displayCanvas Window</param>
         private void displayCanvas_Paint(object sender, PaintEventArgs e)
         {
-            /// Creates Graphics object g to paint or draw contents in the application.
+            // Creates Graphics object g to paint or draw contents in the application.
             Graphics g = e.Graphics;
             g.DrawImageUnscaled(bitmapCanvas, 0, 0);
         }
@@ -261,10 +261,10 @@ namespace GPLA_Assessment
             // Calls clearDictionary() method of Canvas class.
             canvasObject.clearDictionary();
 
-            /// Creates an array of string, retrieves the text from programWindow and stores the lines. 
+            // Creates an array of string, retrieves the text from programWindow and stores the lines. 
             String[] multilineCodes = programWindow.Lines;
 
-            /// Index to count the line number of the text
+            // Index to count the line number of the text
             int index = 1;
 
             /*
@@ -327,7 +327,7 @@ namespace GPLA_Assessment
         /// <param name="e">Handles events that are to be performed in the application when 'Load program file' subMenu is clicked in the application. </param>
         private void loadProgramMenu_Click(object sender, EventArgs e)
         {
-            /// Creates object of <see cref="OpenFileDialog"/> which will help to open a dialog box to choose and open a file from the system.
+            // Creates object of <see cref="OpenFileDialog"/> which will help to open a dialog box to choose and open a file from the system.
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             // Sets the title of the dialog box
@@ -340,13 +340,13 @@ namespace GPLA_Assessment
             {
                 try
                 {
-                    /// Stores the text that has been read and retrieved from the opened file.
+                    // Stores the text that has been read and retrieved from the opened file.
                     String lines;
 
-                    /// Retrieves the path of the file which has been chosen by the user
+                    // Retrieves the path of the file which has been chosen by the user
                     String filePath = openFileDialog.FileName;
 
-                    /// Opens the file from the specific path and stores all data from the file into StreamReader object: streamFile
+                    // Opens the file from the specific path and stores all data from the file into StreamReader object: streamFile
                     StreamReader streamFile = File.OpenText(filePath);
 
                     /*
@@ -377,7 +377,7 @@ namespace GPLA_Assessment
         /// <param name="e">Handles events that are to be performed in the application when 'Save Program' subMenu is clicked in the application. </param>
         private void saveProgramMenu_Click(object sender, EventArgs e)
         {
-            /// Creates object of <see cref="SaveFileDialog"/> which will help to open a dialog box to choose path and filename, where some text is to be saved.
+            // Creates object of <see cref="SaveFileDialog"/> which will help to open a dialog box to choose path and filename, where some text is to be saved.
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
             // Sets the title of the dialog box.
@@ -391,13 +391,13 @@ namespace GPLA_Assessment
              */
             if (saveFileDialog.FileName != "")
             {
-                /// Retrieves the path of the destination folder where the file is meant to be saved.
+                // Retrieves the path of the destination folder where the file is meant to be saved.
                 String filePath = saveFileDialog.FileName;
 
-                /// Creates a file in the destination folder chosen by the user.
+                // Creates a file in the destination folder chosen by the user.
                 StreamWriter writeProgram = File.CreateText(filePath);
 
-                /// Retrieves the text that has been written in the programWindow and stores in String array: codeToSave.
+                // Retrieves the text that has been written in the programWindow and stores in String array: codeToSave.
                 String [] codeToSave = programWindow.Lines;
 
                 /*

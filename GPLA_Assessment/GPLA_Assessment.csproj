@@ -54,6 +54,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InvalidCommand.cs" />
     <Compile Include="PerformIF.cs" />
     <Compile Include="PerformLoop.cs" />
     <Compile Include="PerformMethod.cs" />
