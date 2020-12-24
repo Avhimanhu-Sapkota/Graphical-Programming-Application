@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace GPLA_Assessment
@@ -12,7 +10,7 @@ namespace GPLA_Assessment
     /// <summary>
     /// Performs various tasks when changes are made in the application window and <br/>also makes changes in the application in reaction to the changes made.
     /// Implements methods: <br/><see cref="ClearScreen"/>, <see cref="MoveTo)"/>, <see cref="ResetPen"/>, <see cref="DrawLine(Color, int, int)"/>, <see cref="DrawRectangle(Color, bool, int, int)"/>
-    /// <br/><see cref="DrawCircle(Color, bool, int)"/>, <see cref="DrawTriangle(Color, bool)"/>, and <see cref="programReader(string, int)"/>
+    /// <br/><see cref="DrawCircle(Color, bool, int)"/>, <see cref="DrawTriangle(Color, bool)"/>, <see cref="OldCommands(string, int, bool)"/>, and <see cref="programReader(string, int, bool)"/>
     /// </summary>
     public class Canvas
     {
@@ -21,8 +19,6 @@ namespace GPLA_Assessment
         /// Helps to draw graphical contents in the displayCanvas pictureBox of the application.
         /// </summary>
         public Graphics g;
-
-        public string refer;
 
         /// <summary>
         /// Creates a dictionary object with key and values storing string and integer when variables and values is typed by the user. 
@@ -33,7 +29,7 @@ namespace GPLA_Assessment
         /// Stores boolean value; true if var is included in to programWindow of application and false if not typed. 
         /// Default value is false assuming var is not typed yet.
         /// </summary>
-        private bool variableChecker = false;
+        public bool variableChecker = false;
 
         /// <summary>
         /// Stores first parameter when string typed in programWindow is splitted using space or equals to sign.
@@ -74,13 +70,13 @@ namespace GPLA_Assessment
         
         /// <summary>
         /// Object of <see cref="Shape"/>. <br/>
-        /// Access the methods of <see cref="Shape"/> class from <see cref="Canvas"/> class.
+        /// Accesses the methods of <see cref="Shape"/> class from <see cref="Canvas"/> class.
         /// </summary>
         Shape newShape;
 
         /// <summary>
         /// Object of <see cref="ShapeFactory"/>. <br/>
-        /// Access the methods of <see cref="ShapeFactory"/> class from <see cref="Canvas"/> class.
+        /// Access the methods and objects of <see cref="ShapeFactory"/> class from <see cref="Canvas"/> class.
         /// </summary>
         ShapeFactory identiferObject = new ShapeFactory();
 
@@ -91,16 +87,72 @@ namespace GPLA_Assessment
         /// </summary>
         public bool fill;
 
+        /// <summary>
+        /// Object of <see cref="PerformIF"/><br/>
+        /// Accesses the methods of <see cref="PerformIF"/> class from the <see cref="Canvas"/> class.
+        /// </summary>
         PerformIF performIFObject = new PerformIF();
+
+        /// <summary>
+        /// Object of <see cref="PerformLoop"/> <br/>
+        /// Accesses the methods and objects of <see cref="PerformLoop"/> class from the <see cref="Canvas"/> class.
+        /// </summary>
         PerformLoop performLoopObject = new PerformLoop();
+
+        /// <summary>
+        /// Stores boolean values: <br/>
+        /// True when if Condition typed in the Program Window is syntactically correct. <br/>
+        /// False is set as default and when the condition is not correct or matched.
+        /// </summary>
         bool ifConditionFlag = false;
-        bool conditionNotMatched = false;
+
+        /// <summary>
+        /// Stores boolean values: <br/>
+        /// True when condition in the if statement typed in the Program Window is not matched logically and false otherwise.
+        /// </summary>
+        public bool conditionNotMatched = false;
+
+        /// <summary>
+        /// Stores boolean values: <br/>
+        /// True when 'then' keyword is encountered within the if statement typed in the Program Window and false otherwise.
+        /// </summary>
         bool thenFlag = false;
+
+        /// <summary>
+        /// Stores booean values: <br/>
+        /// True when loop condition typed in the Program Window is syntactically correct. <br/>
+        /// False is set as default and when the condition is not correct or matched.
+        /// </summary>
         bool loopConditionFlag = false;
-        bool loopConditionMatched = false;
+
+        /// <summary>
+        /// Stores boolean values: <br/>
+        /// True when condition in the while statement typed in the Program Window is matched logically and false otherwise.
+        /// </summary>
+        public bool loopConditionMatched = false;
+
+        /// <summary>
+        /// Stores string value: <br/>
+        /// The while command line entered in the Program Window is stored in the variable in order to check while condition multiple times.
+        /// </summary>
         String whileCommand;
+
+        /// <summary>
+        /// Stores boolean values: <br/>
+        /// True until endloop is encountered in the Program Window and false when endloop after while condition is found.
+        /// </summary>
         bool whileFlag = false;
+
+        /// <summary>
+        /// Stores boolean values: <br/>
+        /// True until endif is encountered in the Program Window and false when endif after if statement is found.
+        /// </summary>
         bool ifFlag = false;
+
+        /// <summary>
+        /// Stores the parameter values which stores every angle point of a polygon.
+        /// </summary>
+        int[] parametersList = new int[8];
 
         /// <summary>
         /// Stores the name of <see cref="Color"/> which will be used in pen to draw objects of different colors. 
@@ -127,7 +179,6 @@ namespace GPLA_Assessment
             // Sets the default fill option to false.
             fill = false;
 
-            refer = "default";
         }
 
         /// <summary>
@@ -232,6 +283,22 @@ namespace GPLA_Assessment
 
             // Draws rectangle, in the displayCanvas, using the values set.
             newShape.draw(g);
+        }
+
+        public void DrawPolygon(Color newColor, bool fill, String[] parameters)
+        {
+            newShape = identiferObject.getShape("polygon");
+
+            int index = 2;
+            parametersList[0] = pointX;
+            parametersList[1] = pointY;
+            foreach (String item in parameters)
+            {
+                parametersList[index] = Convert.ToInt32(item);
+                index++;
+            }
+           
+            newShape.set(newColor, fill, parametersList);
         }
 
         /// <summary>
@@ -350,9 +417,8 @@ namespace GPLA_Assessment
         }
 
         /// <summary>
-        /// Method Triggered when some text is written in the program Window and run command is pressed.<br/>
-        /// Splits the string and stores their value in variables. Checks the string then: Implements <br/><see cref="DrawLine(Color, int, int)"/>, <see cref="DrawRectangle(Color, bool, int, int)"/>
-        /// <see cref="DrawCircle(Color, bool, int)"/>, <see cref="DrawTriangle(Color, bool)"/> being based on the conditions. 
+        /// Method Triggered when some text is written in the program Windown and run command is pressed. <br/>
+        /// Checks the entered Code line by line for built in commands like 'var', 'if statement', 'while statement' and also performs variable operations like (+), (-), (*) and (/)
         /// </summary>
         /// <param name="enteredCode">Holds each line of command retrieved from the program Window of the application</param>
         /// <param name="lineCounter">Holds the number of line of the text</param>
@@ -360,10 +426,13 @@ namespace GPLA_Assessment
         public void programReader(String enteredCode, int lineCounter, bool syntaxButton)
         {
 
+            /// Stores the first word of the enteredCode of every line in the Program Window to check for built in commands like if, method or while.
+            String declareName = enteredCode.Split(' ')[0];
+
             /*
-             * Checks if the text entered in programWindow contains 'var' and performs the task underneath, only if it contains.
+             * Checks if the text entered in programWindow contains 'var' as first word and performs the task underneath, only if it contains.
              */
-            if (enteredCode.Contains("var"))
+            if (declareName.Equals("var"))
             {
                 // Changes the boolean value of variableChecker to true as the line contain var.
                 variableChecker = true;
@@ -394,188 +463,285 @@ namespace GPLA_Assessment
                     // Adds the name of variable as key and integer value of variable as value to the dictionary created. 
                     storeVariables.Add(varName, intVarValue);
                 }
+                // Catches FormatException thrown when the var expression is syntactically incorrect: in any other format
                 catch (FormatException)
                 {
+                    ///Adds the entered text as error in the arrayList errorList so that it can be displayed in the error display area.
                     errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter in correct syntax (EX: var<space><varName>=<varValue>)'");
                 }
+                // Catches IndexOutOfRangeException thrown when the var expression is syntactically incorrect: with multiple unwanted spaces.
                 catch (IndexOutOfRangeException)
                 {
+                    ///Adds the entered text as error in the arrayList errorList so that it can be displayed in the error display area.
                     errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter in correct syntax (EX: var<space><varName>=<varValue>)'");
                 }
             }
 
-            String declareName = enteredCode.Split(' ')[0];
-
+            /*
+             * Checks the string written as first word of each line and performs operations underneath accordingly.
+             */
             if (declareName.Equals("if"))
             {
+                /// Changes the boolean value of ifFlag to true as if statement is encountered. 
                 ifFlag = true;
+
+                /// Calls the method of performIF class which checks the operator and expression written along with
+                /// if statement and returns true if the statement is logically and syntactically correct.
                 ifConditionFlag = performIFObject.checkIfCommand(enteredCode, lineCounter);
 
+                /// Checks if the if statement contains then along at the end of the statement and performs the task underneath.
                 if (enteredCode.Contains("then"))
                 {
+                    /// Sets the boolean value of thenFlag to true as then keyword is encountered.
                     thenFlag = true;
                 }
 
+                /*
+                 * Checks if the condition flag has true or false value and performs the task underneath accordingly.
+                 */
                 if (ifConditionFlag)
                 {
+                    /// Sets the value of conditionNotMatched to false as the condition is actually matched.
                     conditionNotMatched = false;      
                 }
                 else
                 {
+                    /// Sets the value of conditionNotMatched to true as the condition is not matched.
                     conditionNotMatched = true;
                 }
             }
+            /// Checks if the ifFlag is still true and performs the task underneath if true.
             else if (ifFlag)
             {
+                /*
+                 * Checks if the if condition is matched and performs task underneath if true.
+                 */
                 if (conditionNotMatched)
                 {
+                    /// Checks if the current line has keyword 'endif' and performs the task underneath
                     if (enteredCode.Equals("endif"))
                     {
+                        /// Sets the boolean value of conditionNotMatched to false as endif is encountered.
                         conditionNotMatched = false;
+                        ///sets the boolean value of ifFlag to false as endif is encountered.
                         ifFlag = false;
                     }
                     
+                    /// Checks if then flag is still true and performs the task underneath.
                     if (thenFlag)
                     {
+                        /// Sets the boolean value of conditionNotMatched to false as then is encountered.
                         conditionNotMatched = false;
+                        ///sets the boolean value of ifFlag to false as then is encountered.
                         ifFlag = false;
                     }
                 }
                 else
                 {
+                    /// Calls OldCommands method to execute drawing commands as 'if flag in not true'.
                     OldCommands(enteredCode, lineCounter, syntaxButton);
 
+                    /// Checks if the current line has keyword 'endif' and performs the task underneath
                     if (enteredCode.Equals("endif"))
                     {
+                        /// Sets the boolean value of conditionNotMatched to false as endif is encountered.
                         conditionNotMatched = false;
+                        ///sets the boolean value of ifFlag to false as endif is encountered.
                         ifFlag = false;
                     }
                 }
             }
+            /// Checks if thenflag is true and conditionNotMatched is false and performs the task underneath.
             else if (thenFlag && !conditionNotMatched)
             {
+                /// Calls OldCommands method to execute drawing commands as then keyword was encountered and condition was true.
                 OldCommands(enteredCode, lineCounter, syntaxButton);
+
+                ///Sets the boolean value of thenFlag to false as the task underneath then has already been performed.
                 thenFlag = false;
             }
+            /// Checks if the enteredCode has while as its first word and performs the underneath.
             else if (declareName.Equals("while"))
             {
+                /// Calls the method of performLoop class which checks the operator and expression written along with
+                /// while statement and returns true if the statement is logically and syntactically correct.
                 loopConditionFlag = performLoopObject.checkLoopCommand(enteredCode);
 
+
+                /*
+                 * Checks if the loop condition flag has true or false value and performs the task underneath accordingly.
+                 */
                 if (loopConditionFlag)
                 {
+                    /// Stores the entire line of code into whileCommand.
                     whileCommand = enteredCode;
+                    /// Sets the boolean value of loopConditionMatched to true as loop condition is matched.
                     loopConditionMatched = true;
                 }
                 else
                 {
+                    /// Sets the boolean value of loopConditionMatched to true as loop condition is not matched.
                     loopConditionMatched = false;
                 }
 
+                /// Changes the boolean value of whileFlag to true as while statement is encountered. 
                 whileFlag = true;
             }
+            /// Checks if the whileFlag is still true and performs the task underneath if true.
             else if (whileFlag)
             {
+                /// Creates a temporary ArrayList which stores all the canvas objects which helps in drawing object in the display canvas.
                 ArrayList tempList = new ArrayList();
+                /*
+                 * Adds the canvas objects into the tempList arrayList.
+                 */
                 tempList.Add(g);
                 tempList.Add(pointX);
                 tempList.Add(pointY);
                 tempList.Add(pen);
+
+                /// Calls executeLoop method of PerformLoop class which performs the loop until the loop condition is false. 
                 whileFlag = performLoopObject.executeLoop(whileFlag, loopConditionMatched, whileCommand, enteredCode, lineCounter, syntaxButton, tempList);
             }
+            /// Checks if the specific line of enteredCode contains '+' sign and performs tasks underneath.
             else if (enteredCode.Contains("+"))
             {
+                /// Splits the statement with respect to the '+' sign and stores separated values in the string array
                 String[] expParameter = enteredCode.Split('+'); 
+
+                /// Checks if the first parameter in the string array is a variable stored in data dictionary and performs the tasks underneath.
                 if (storeVariables.ContainsKey(expParameter[0]))
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] + storeVariables[expParameter[1]];
                     }
                     else
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] + Convert.ToInt32(expParameter[1]);
                     }
                 }
                 else
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[1]] = storeVariables[expParameter[1]] + Convert.ToInt32(expParameter[0]);
                     }
                  }
             }
+            /// Checks if the specific line of enteredCode contains '-' sign and performs tasks underneath.
             else if (enteredCode.Contains("-"))
             {
+                /// Splits the statement with respect to the '-' sign and stores separated values in the string array
                 String[] expParameter = enteredCode.Split('-');
+
+                /// Checks if the first parameter in the string array is a variable stored in data dictionary and performs the tasks underneath.
                 if (storeVariables.ContainsKey(expParameter[0]))
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] - storeVariables[expParameter[1]];
                     }
                     else
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] - Convert.ToInt32(expParameter[1]);
                     }
                 }
                 else
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[1]] = storeVariables[expParameter[1]] - Convert.ToInt32(expParameter[0]);
                     }
                 }
             }
+            /// Checks if the specific line of enteredCode contains '*' sign and performs tasks underneath.
             else if (enteredCode.Contains("*"))
             {
+                /// Splits the statement with respect to the '*' sign and stores separated values in the string array
                 String[] expParameter = enteredCode.Split('*');
+
+                /// Checks if the first parameter in the string array is a variable stored in data dictionary and performs the tasks underneath.
                 if (storeVariables.ContainsKey(expParameter[0]))
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] * storeVariables[expParameter[1]];
                     }
                     else
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] * Convert.ToInt32(expParameter[1]);
                     }
                 }
                 else
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[1]] = storeVariables[expParameter[1]] * Convert.ToInt32(expParameter[0]);
                     }
                 }
             }
+            /// Checks if the specific line of enteredCode contains '/' sign and performs tasks underneath.
             else if (enteredCode.Contains("/"))
             {
+                /// Splits the statement with respect to the '/' sign and stores separated values in the string array
                 String[] expParameter = enteredCode.Split('/');
+
+                /// Checks if the first parameter in the string array is a variable stored in data dictionary and performs the tasks underneath.
                 if (storeVariables.ContainsKey(expParameter[0]))
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] / storeVariables[expParameter[1]];
                     }
                     else
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[0]] = storeVariables[expParameter[0]] / Convert.ToInt32(expParameter[1]);
                     }
                 }
                 else
                 {
+                    /// Checks if the second parameter in the string array is also a variable and performs the tasks underneath.
                     if (storeVariables.ContainsKey(expParameter[1]))
                     {
+                        /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[1]] = storeVariables[expParameter[1]] / Convert.ToInt32(expParameter[0]);
                     }
                 }
             }
             else
             {
+                /// OldCommands methods is called as the line did not have any built in keywords.
                 OldCommands(enteredCode, lineCounter, syntaxButton);
             }
          }
 
+        /// <summary>
+        /// Method Triggered when shapes and other drawing statements including moveto, drawto, triangle, circle, rectangle, etc. are to be processed.<br/>
+        /// Splits the string and stores their value in variables. Checks the string then: Implements <br/><see cref="DrawLine(Color, int, int)"/>, <see cref="DrawRectangle(Color, bool, int, int)"/>
+        /// <see cref="DrawCircle(Color, bool, int)"/>, <see cref="DrawTriangle(Color, bool)"/> being based on the conditions. 
+        /// </summary>
+        /// <param name="enteredCode">Holds each line of command retrieved from the program Window of the application</param>
+        /// <param name="lineCounter">Holds the number of line of the text</param>
+        /// <param name="syntaxButton">Holds the boolean value of syntaxButton which confirms if syntaxButton was pressed in the application</param>
         public void OldCommands(String enteredCode, int lineCounter, bool syntaxButton)
         {
             /*
@@ -756,27 +922,37 @@ namespace GPLA_Assessment
                         String[] splittedParameters = ParameterSplitter(parameters);
 
                         /*
+                         * Checks if the parameter list has any letters or variables and performs the code underneath
+                         */
+                        if (Regex.IsMatch(splittedParameters[0], @"[a-z]"))
+                        {
+                            /*
                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
                              */
-                        if (storeVariables.ContainsKey(splittedParameters[0]))
-                        {
-                            //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                            parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
+                            if (storeVariables.ContainsKey(splittedParameters[0]))
+                            {
+                                //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                                parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
+                            }
                         }
-
-                        if (storeVariables.ContainsKey(splittedParameters[1]))
-                        {
-                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
-                            parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
-                        }
-
-                        if (parameter1 == 0)
+                        else
                         {
                             /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
                             parameter1 = Convert.ToInt32(splittedParameters[0]);
                         }
 
-                        if (parameter2 == 0)
+                        /*
+                         * Checks if the parameter list has any letters or variables and performs the code underneath
+                         */
+                        if (Regex.IsMatch(splittedParameters[1], @"[a-z]"))
+                        {
+                            if (storeVariables.ContainsKey(splittedParameters[1]))
+                            {
+                                /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                                parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
+                            }
+                        }
+                        else
                         {
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(splittedParameters[1]);
@@ -813,27 +989,37 @@ namespace GPLA_Assessment
                         String[] splittedParameters = ParameterSplitter(parameters);
 
                         /*
+                         * Checks if the parameter list has any letters or variables and performs the code underneath
+                         */
+                        if (Regex.IsMatch(splittedParameters[0], @"[a-z]"))
+                        {
+                            /*
                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
                              */
-                        if (storeVariables.ContainsKey(splittedParameters[0]))
-                        {
-                            //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                            parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
+                            if (storeVariables.ContainsKey(splittedParameters[0]))
+                            {
+                                //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                                parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
+                            }
                         }
-
-                        if (storeVariables.ContainsKey(splittedParameters[1]))
-                        {
-                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
-                            parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
-                        }
-
-                        if (parameter1 == 0)
+                        else
                         {
                             /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
                             parameter1 = Convert.ToInt32(splittedParameters[0]);
                         }
 
-                        if (parameter2 == 0)
+                        /*
+                         * Checks if the parameter list has any letters or variables and performs the code underneath
+                         */
+                        if (Regex.IsMatch(splittedParameters[1], @"[a-z]"))
+                        {
+                            if (storeVariables.ContainsKey(splittedParameters[1]))
+                            {
+                                /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                                parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
+                            }
+                        }
+                        else
                         {
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(splittedParameters[1]);
@@ -870,27 +1056,37 @@ namespace GPLA_Assessment
                         String[] splittedParameters = ParameterSplitter(parameters);
 
                         /*
+                         * Checks if the parameter list has any letters or variables and performs the code underneath
+                         */
+                        if (Regex.IsMatch(splittedParameters[0], @"[a-z]"))
+                        {
+                            /*
                              * Checks if the dictionary contains the key in the first string of the array and assigns the value of string to parameter1
                              */
-                        if (storeVariables.ContainsKey(splittedParameters[0]))
-                        {
-                            //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
-                            parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
+                            if (storeVariables.ContainsKey(splittedParameters[0]))
+                            {
+                                //  Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
+                                parameter1 = Convert.ToInt32(storeVariables[splittedParameters[0]]);
+                            }
                         }
-
-                        if (storeVariables.ContainsKey(splittedParameters[1]))
-                        {
-                            /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
-                            parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
-                        }
-
-                        if (parameter1 == 0)
+                        else
                         {
                             /// Retrieves the first string of the array, converts it's value to integer and stores it as parameter1.
                             parameter1 = Convert.ToInt32(splittedParameters[0]);
                         }
-                        
-                        if (parameter2 == 0)
+
+                        /*
+                         * Checks if the parameter list has any letters or variables and performs the code underneath
+                         */
+                        if (Regex.IsMatch(splittedParameters[1], @"[a-z]"))
+                        {
+                            if (storeVariables.ContainsKey(splittedParameters[1]))
+                            {
+                                /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
+                                parameter2 = Convert.ToInt32(storeVariables[splittedParameters[1]]);
+                            }
+                        }
+                        else
                         {
                             /// Retrieves the second string of the array, converts it's value to integer and stores it as parameter2.
                             parameter2 = Convert.ToInt32(splittedParameters[1]);
@@ -901,7 +1097,7 @@ namespace GPLA_Assessment
                          */
                         if (!syntaxButton)
                         {
-                            // Calls method DrawRectangle, which draws rectangle, as the command holds the string triangle
+                            // Calls method DrawRectangle, which draws rectangle, as the command holds the string rectangle
                             DrawRectangle(penColor, fill, parameter1, parameter2);
                         }
                     }
@@ -918,9 +1114,19 @@ namespace GPLA_Assessment
                         errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Two Numeric Values for coordinates.");
                     }
                 }
-                else if (command.Equals("var"))
+                else if (command.Equals("polygon"))
                 {
+                    /// Calls method which has Array of strings which stores parameters, separated by ',' as a different item.
+                    String[] splittedParameters = ParameterSplitter(parameters);
 
+                    /*
+                      * Checks if the syntaxButton was pressed and only allows to do the task if syntaxButton was not pressed.
+                      */
+                    if (!syntaxButton)
+                    {
+                        ///Calls a method DrawPolygoon, which draws polygon, as the command holds the string polygon
+                        DrawPolygon(penColor, fill, splittedParameters);
+                    }
                 }
                 else
                 {
@@ -932,6 +1138,8 @@ namespace GPLA_Assessment
             // Catches error if there is only one or more than two values in the variable: enteredCode. 
             catch (IndexOutOfRangeException)
             {
+                // Calls a method which adds the specified string in the arrayList errorList. 
+                // As index is out of range and exception thrown is catched.
                 errorList.Add("ERROR!!! AT LINE " + lineCounter + ". Please Enter Valid Command.");
             }
         }

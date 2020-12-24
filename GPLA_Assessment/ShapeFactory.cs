@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GPLA_Assessment
 {
@@ -41,6 +42,11 @@ namespace GPLA_Assessment
             {
                 // Creates an object of Triangle class and returns it as the string in the parameter was 'Triangle'
                 return new Triangle();
+            }
+            else if (shapeType.Equals("polygon"))
+            {
+                // Creates an object of Triangle class and returns it as the string in the parameter was 'Triangle'
+                return new Polygon();
             }
             else
             {

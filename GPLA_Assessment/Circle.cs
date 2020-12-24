@@ -64,8 +64,6 @@ namespace GPLA_Assessment
                 g.FillEllipse(brush, pointX - radius, pointY - radius, radius*2, radius*2);
             }
             
-            System.Windows.Forms.MessageBox.Show("HHHI " + pen  +" " + (radius) + " "  + (radius * 2) );
-
             // Draws the ellipse at the given point with the entered radius 
             g.DrawEllipse(pen, pointX-radius, pointY-radius, radius*2, radius*2);
         }

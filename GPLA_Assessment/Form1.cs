@@ -46,7 +46,6 @@ namespace GPLA_Assessment
             InitializeComponent();
             // Draws the contents from the bitmapCanvas into the application's pictureBox: displayCanvas
             canvasObject = new Canvas(Graphics.FromImage(bitmapCanvas));
-            canvasObject.refer = "something ";
         }
 
         /// <summary>
@@ -95,38 +94,29 @@ namespace GPLA_Assessment
         private void userGuidelinesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             /// Holds the message to be displayed in the message box
-            String message = "\n\nApplication Interface:\nDisplay Canvas: It is a display panel or drawing " +
-                "area where you will be able to view your outputs in accordance to the commands you type in " +
-                "Program Window and Command Line Window.\n\nProgram Window: A text area where you can " +
-                "type your programming codes which will allow you to perform various tasks. This window supports " +
-                "multiple line of codes. It only supports some command prompts listed below. If you fail to type commands " +
-                "correctly, you may encounter errors.\n\nCommands supported in Program Window:\n1. moveTo <x>,<y> - " +
-                "This command will change the position of your pen to the specified position in the canvas. In place of moveTo " +
-                "you are supposed to give x-axis and y-axis coordinates to place you pen's position. Example: moveTo 50,100 will " +
-                "change the position of your pen to x-axis: 50 and y-axis: 100\n\n2. drawTo <x>,<y> - This command will draw a " +
-                "line from the current position of the pen to the specified position in the canvas. In place of drawTo you are " +
-                "supposed to give x-axis and y-axis coordinates which will be the end point of your line.  Example: drawTo 50,100 " +
-                "will draw a line from current pen position to x-axis: 50 and y-axis: 100\n\n3. Rectangle <width>, <height> - " +
-                "This command will draw a rectangle of specified width and height from the current pen position. Example: " +
-                "Rectangle 50,100 will draw a rectangle of height = 100 and width = 50 from the current pen position.\n\n4. Circle " +
-                "< radius > - This command will draw a circle of specified radius from the current pen position.Example: Circle 20 will " +
-                "draw a circle of radius = 20 from the current pen position.\n\n5. Triangle - This command will draw a triangle from " +
-                "the current pen position. \n\n6. Pen <color> -This command will specify the color of the pen. However, this command " +
-                "only supports limited colors, they are: red, blue, yellow and green. If you fail to specify colors from the list you may encounter " +
-                "errors.\n\n7. Fill <on / off> -This command will specify color fills for shapes(rectangle, circle and triangle). Example: Fill on will " +
-                "display the shape filled with the chosen color while Fill off will display the shape outlined with the chosen color but the inside " +
-                "area of the shape will be transparent.\n\nCommand Line Window: A text area where you are supposed to type basic command " +
-                "prompts which will help you perform operations within the application. This window supports single line of code. It supports " +
-                "all the command that is accepted by Program Window but has to be in single line. Some more commands supported by this window" +
-                " are listed below. If you fail to type commands correctly, you may encounter errors. \n\nCommands supported in Command Line " +
-                "Window\nClear - This command clears the drawing area.\nRun - This command will execute the codes written in Program Window\n" +
-                "Reset - This command resets the initial position of pen to top left corner of the screen\n\nCheck Syntax Button: A button which " +
-                "scans your code in the Program Window and  returns error messages if the code has errors and returns proceed otherwise." + 
-                "\n\nError Feedback Window: A text display area which holds all the error that has been detected in the Program Window and " +
-                "Command Line Window. Errors are displayed in red colored text and if there are no errors then it displays proceed in green colored " +
-                "text\n\nLoad Program File (File - SubMenu): This menu will allow user to choose txt file, which should contain program code, and " +
-                "displays the contents of the file in Program Window.\n\nSave Program (File - SubMenu): This menu will allow user to save the code " +
-                "that has been written in Program Window." ;
+            String message = "Application Interface: \n\nDisplay Canvas: It is a display panel or drawing area where you will be able to view your outputs in accordance " +
+                "to the commands you type in Program Window and Command Line Window.\n\nProgram Window: A text area where you can type your programming codes which will allow " +
+                "you to perform various tasks. This window supports multiple line of codes. It only supports some command prompts listed below. If you fail to type commands " +
+                "correctly, you may encounter errors.\n\nCommand Line Window: A text area where you are supposed to type basic command prompts which will help you perform " +
+                "operations within the application. This window supports single line of code. It supports all the command that is accepted by Program Window but has to be " +
+                "in single line. Some more commands supported by this window are listed below. If you fail to type commands correctly, you may encounter errors.\n\nCheck " +
+                "Syntax Button: A button which scans your code in the Program Window and  returns error messages if the code has errors and returns proceed otherwise.\n\nError " +
+                "Feedback Window: A text display area which holds all the error that has been detected in the Program Window and Command Line Window. Errors are displayed in red " +
+                "colored text and if there are no errors then it displays proceed in green colored text.\n\nLoad Program File (File - SubMenu): This menu will allow user to " +
+                "choose txt file, which should contain program code, and displays the contents of the file in Program Window.\n\nSave Program (File - SubMenu): This menu will " +
+                "allow user to save the code that has been written in Program Window.\n\nCommands supported:\n1. moveTo <x>,<y> -  Change the position of your pen Example: " +
+                "moveTo 50,100.\n2. drawTo <x>,<y> - Draw a line from the current position of the pen to the specified position Example: drawTo 50,100\n3. Rectangle <width>, " +
+                "<height> - Draw a rectangle of specified width and height. Example: Rectangle 50,100 \n4. Circle < radius > - Draw a circle of specified radius from the current " +
+                "pen position. Example: Circle 20 \n5. Triangle - Draws a triangle from the current pen position.\n6. Polygon <points> - Draws polygon with specified number of " +
+                "points as angle from current pen position.\n7. Pen <color> - Specify the color of the pen. Supports limited colors: pen red, pen blue, pen yellow and pen green." +
+                " \n8. Fill <on / off> -Specify color fills for shapes. Example: Fill on.\n9. Clear - This command clears the drawing area.\n10. Run - This command will execute the" +
+                " codes written in Program Window\n11. Reset - This command resets the initial position of pen to top left corner of the screen\n12. var variableName = constant value" +
+                " - creates the variable with specified name and assigns value. Example, var x = 10\n13. variableName(+, -, *, /) constant value -performs variable operation and " +
+                "updates value of variables.Example, x + 20\n14. if < condition > then - if condition statement with then performs single line if conditions.\n15. if " +
+                "< condition >……endif - if condition statement with endif performs multiple line if conditions.\n16. while< condition >…….endloop - while loop performs loop until " +
+                "endloop is encountered and until which condition is false.\n17. method MethodName() -creates a method of specified name and performs code only when methodName " +
+                "is called from program.\n18. method MethodName(parameter list) -creates a method of specified name along with passed parameters and performs code only when " +
+                "methodName is called from program." ;
 
             /// Holds the title of the message Box
             String title = "User Guidelines - Graphical Programming Language Application";
