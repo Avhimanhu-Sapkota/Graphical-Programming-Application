@@ -57,7 +57,7 @@ namespace GPLA_Assessment
             if (command.Length != 2)
             {
                 ///---------------------------------------------------------------------------
-                MessageBox.Show("Enter correct Statement");
+                Canvas.errorList.Add("Enter correct Statement");
             }
 
             /// Checks if the command's first parameter is true and performs the task underneath.
@@ -115,6 +115,9 @@ namespace GPLA_Assessment
         /// <returns> True when if condition expression is logically correct and false otherwise. </returns>
         public bool executeIFCommand(String ifOperator, String ifCondition)
         {
+            /// Creates an object of Canvas class in order to access methods of the class.
+            Canvas canvasObject = new Canvas();
+
             /// Boolean variable set to false which is true if the condition is logically correct.
             bool conditionCheck = false;
 
@@ -126,17 +129,30 @@ namespace GPLA_Assessment
             {
                 /// Retrieves the value from data dictionary by matching the name of variable stored and entered then stores in variableName.
                 variableName = Canvas.storeVariables[splittedIFCondition[0]];
-
-                /// Checks if the splitted if condition's other half contains any variable and performs task underneath.
-                if (Canvas.storeVariables.ContainsKey(splittedIFCondition[1]))
+                try
                 {
-                    /// Retrieves the value from data dictionary by matching the name of variable stored and entered then stores in variableValue.
-                    variableValue = Canvas.storeVariables[splittedIFCondition[1]];
+                    /// Checks if the splitted if condition's other half contains any variable and performs task underneath.
+                    if (Canvas.storeVariables.ContainsKey(splittedIFCondition[1]))
+                    {
+                        /// Retrieves the value from data dictionary by matching the name of variable stored and entered then stores in variableValue.
+                        variableValue = Canvas.storeVariables[splittedIFCondition[1]];
+                    }
+                    else
+                    {
+                        try
+                        {
+                            /// Converts the constant value entered in the second half of the if condition expression and stores in variableValue.
+                            variableValue = Convert.ToInt32(splittedIFCondition[1]);
+                        }
+                        catch (FormatException)
+                        {
+                            Canvas.errorList.Add("Enter correct Statement");
+                        }
+                    }
                 }
-                else
+                catch (IndexOutOfRangeException)
                 {
-                    /// Converts the constant value entered in the second half of the if condition expression and stores in variableValue.
-                    variableValue = Convert.ToInt32(splittedIFCondition[1]);
+                    Canvas.errorList.Add("Enter correct Statement");
                 }
 
                 /// Checks the operator contained by the if condition expressions and performs task underneath
@@ -207,7 +223,11 @@ namespace GPLA_Assessment
                 catch (FormatException)
                 {
                     ///------------------------------------------------------------------------------------
-                    MessageBox.Show("Enter Correct if statement");
+                    Canvas.errorList.Add("Enter correct Statement");
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    Canvas.errorList.Add("Enter correct if statement");
                 }
 
                 /// Checks the operator contained by the if condition expressions and performs task underneath

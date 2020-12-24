@@ -71,7 +71,7 @@ namespace GPLA_Assessment
             if (command.Length != 2)
             {
                 ///---------------------------------------------------------------------------
-                MessageBox.Show("Enter correct Statement");
+                Canvas.errorList.Add("Enter correct Statement");
             }
 
             /// Checks if the command's first parameter is true and performs the task underneath.
@@ -144,16 +144,27 @@ namespace GPLA_Assessment
                 /// Retrieves the value from data dictionary by matching the name of variable stored and entered then stores in variableName.
                 variableName = Canvas.storeVariables[splittedLoopCondition[0]];
 
-                /// Checks if the splitted while condition's other half contains any variable and performs task underneath.
-                if (Canvas.storeVariables.ContainsKey(splittedLoopCondition[1]))
+                try
                 {
-                    /// Retrieves the value from data dictionary by matching the name of variable stored and entered then stores in variableValue.
-                    variableValue = Canvas.storeVariables[splittedLoopCondition[1]];
+                    /// Checks if the splitted while condition's other half contains any variable and performs task underneath.
+                    if (Canvas.storeVariables.ContainsKey(splittedLoopCondition[1]))
+                    {
+                        /// Retrieves the value from data dictionary by matching the name of variable stored and entered then stores in variableValue.
+                        variableValue = Canvas.storeVariables[splittedLoopCondition[1]];
+                    }
+                    else
+                    {
+                        /// Converts the constant value entered in the second half of the while condition expression and stores in variableValue.
+                        variableValue = Convert.ToInt32(splittedLoopCondition[1]);
+                    }
                 }
-                else
+                catch (IndexOutOfRangeException)
                 {
-                    /// Converts the constant value entered in the second half of the while condition expression and stores in variableValue.
-                    variableValue = Convert.ToInt32(splittedLoopCondition[1]);
+                    Canvas.errorList.Add("Enter correct while statement");
+                }
+                catch (FormatException)
+                {
+                    Canvas.errorList.Add("Enter correct while statement");
                 }
 
                 /// Checks the operator contained by the while condition expressions and performs task underneath
@@ -224,7 +235,11 @@ namespace GPLA_Assessment
                 catch (FormatException)
                 {
                     ///------------------------------------------------------------------------------------
-                    MessageBox.Show("Enter Correct While statement");
+                    Canvas.errorList.Add("Enter Correct While statement");
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    Canvas.errorList.Add("Enter Correct While statement");
                 }
 
                 /// Checks the operator contained by the while condition expressions and performs task underneath

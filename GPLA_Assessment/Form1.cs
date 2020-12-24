@@ -211,7 +211,7 @@ namespace GPLA_Assessment
                 /*
                  * Iterates to retrieve the contents of ArrayList: errorList created in the Canvas class.
                  */
-                foreach (String eachError in canvasObject.errorList)
+                foreach (String eachError in Canvas.errorList)
                 {
                     // Retrieves each item of the ArrayList  and appends it to errorDisplayArea of the application.
                     errorDisplayArea.AppendText(eachError + "\n\n");
@@ -295,7 +295,7 @@ namespace GPLA_Assessment
             /*
              * Iterates to retrieve the contents of ArrayList: errorList created in the Canvas class.
              */
-            foreach (String eachError in canvasObject.errorList)
+            foreach (String eachError in Canvas.errorList)
             {
                 // Retrieves each item of the ArrayList and appends it to errorDisplayArea of the application.
                 errorDisplayArea.AppendText(eachError + "\n\n");
@@ -304,7 +304,7 @@ namespace GPLA_Assessment
             /*
              * Checks if the ArrayList: errorList has any data and display proceed if there is no data. 
              */
-            if(canvasObject.errorList.Count == 0)
+            if(Canvas.errorList.Count == 0)
             {
                 // Sets the color of the text to be displayed in errorDisplayArea, to 'green'.
                 errorDisplayArea.ForeColor = Color.Green;

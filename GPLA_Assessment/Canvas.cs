@@ -66,7 +66,7 @@ namespace GPLA_Assessment
         /// Object of <see cref="ArrayList"/><br/>
         /// Stores error messages that may occor in each line of text written in programWindow. 
         /// </summary>
-        public ArrayList errorList = new ArrayList();
+        public static ArrayList errorList = new ArrayList();
         
         /// <summary>
         /// Object of <see cref="Shape"/>. <br/>
@@ -153,6 +153,11 @@ namespace GPLA_Assessment
         /// Stores the parameter values which stores every angle point of a polygon.
         /// </summary>
         int[] parametersList = new int[8];
+
+        ///--------------------------------------------------------------------------------------
+        bool methodFlag=false;
+        PerformMethod performMethodObject = new PerformMethod();
+        String methodName;
 
         /// <summary>
         /// Stores the name of <see cref="Color"/> which will be used in pen to draw objects of different colors. 
@@ -426,6 +431,14 @@ namespace GPLA_Assessment
         public void programReader(String enteredCode, int lineCounter, bool syntaxButton)
         {
 
+            //Regex part
+            string methodPlaceholder = "method";
+            string parametersPlaceholder = "parameters";
+            //pattern for the calling method
+            string pattern = string.Format(@"^(?<{0}>\w+)(\((?<{1}>[^)]*)\))?$", methodPlaceholder, parametersPlaceholder);
+            //Regex for matching method
+            Regex check = new Regex(pattern, RegexOptions.Compiled);
+
             /// Stores the first word of the enteredCode of every line in the Program Window to check for built in commands like if, method or while.
             String declareName = enteredCode.Split(' ')[0];
 
@@ -460,8 +473,11 @@ namespace GPLA_Assessment
                     // Converst the value of variable from string to integer in order to perform integer functions.
                     int intVarValue = Convert.ToInt32(varValue);
 
-                    // Adds the name of variable as key and integer value of variable as value to the dictionary created. 
-                    storeVariables.Add(varName, intVarValue);
+                    if (!syntaxButton)
+                    {
+                        // Adds the name of variable as key and integer value of variable as value to the dictionary created. 
+                        storeVariables.Add(varName, intVarValue);
+                    }
                 }
                 // Catches FormatException thrown when the var expression is syntactically incorrect: in any other format
                 catch (FormatException)
@@ -502,7 +518,7 @@ namespace GPLA_Assessment
                 if (ifConditionFlag)
                 {
                     /// Sets the value of conditionNotMatched to false as the condition is actually matched.
-                    conditionNotMatched = false;      
+                    conditionNotMatched = false;
                 }
                 else
                 {
@@ -526,7 +542,7 @@ namespace GPLA_Assessment
                         ///sets the boolean value of ifFlag to false as endif is encountered.
                         ifFlag = false;
                     }
-                    
+
                     /// Checks if then flag is still true and performs the task underneath.
                     if (thenFlag)
                     {
@@ -603,11 +619,71 @@ namespace GPLA_Assessment
                 /// Calls executeLoop method of PerformLoop class which performs the loop until the loop condition is false. 
                 whileFlag = performLoopObject.executeLoop(whileFlag, loopConditionMatched, whileCommand, enteredCode, lineCounter, syntaxButton, tempList);
             }
+            else if (declareName.Equals("method"))
+            {
+                methodFlag = performMethodObject.identifyMethod(enteredCode);
+                methodName = performMethodObject.methodName;
+            }
+            else if (methodFlag)
+            {
+                methodFlag = performMethodObject.storeMethodCommands(enteredCode);
+            }
+            else if (enteredCode.Equals(methodName+"()"))
+            {
+                foreach (String eachLineCode in performMethodObject.methodCommands)
+                {
+                    programReader(eachLineCode, lineCounter, syntaxButton);
+                }
+            }
+            else if (check.IsMatch(enteredCode))
+            {
+                try
+                {
+                    String[] splittedCallMethod = enteredCode.Split('(');
+                    String methodParameters = enteredCode.Split('(', ')')[1];
+                    String[] parameters = methodParameters.Split(',');
+
+                    if (splittedCallMethod[0].Equals(methodName))
+                    {
+                        if (parameters.Length == performMethodObject.splittedParameters.Length)
+                        {
+                            for(int index=0; index < parameters.Length; index++)
+                            {
+                                storeVariables[performMethodObject.splittedParameters[index]] = Convert.ToInt32(parameters[index]);
+
+                                if (storeVariables.ContainsKey(performMethodObject.splittedParameters[index]))
+                                {
+                                    performMethodObject.splittedParameters[index] = storeVariables[performMethodObject.splittedParameters[index]].ToString();
+                                }
+                                else
+                                {
+                                    errorList.Add("HELLO");
+                                }
+                            }
+
+                            foreach (String eachLineCode in performMethodObject.methodCommands)
+                            {
+                                programReader(eachLineCode, lineCounter, syntaxButton);
+                            }
+                        }
+                        else
+                        {
+                            errorList.Add("METHOD ERROR");
+                        }
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+
+                }
+
+            }
+
             /// Checks if the specific line of enteredCode contains '+' sign and performs tasks underneath.
             else if (enteredCode.Contains("+"))
             {
                 /// Splits the statement with respect to the '+' sign and stores separated values in the string array
-                String[] expParameter = enteredCode.Split('+'); 
+                String[] expParameter = enteredCode.Split('+');
 
                 /// Checks if the first parameter in the string array is a variable stored in data dictionary and performs the tasks underneath.
                 if (storeVariables.ContainsKey(expParameter[0]))
@@ -632,7 +708,7 @@ namespace GPLA_Assessment
                         /// Adds the values entered along with the operator and hence changes the value stored in that particular variable.
                         storeVariables[expParameter[1]] = storeVariables[expParameter[1]] + Convert.ToInt32(expParameter[0]);
                     }
-                 }
+                }
             }
             /// Checks if the specific line of enteredCode contains '-' sign and performs tasks underneath.
             else if (enteredCode.Contains("-"))
@@ -1127,6 +1203,10 @@ namespace GPLA_Assessment
                         ///Calls a method DrawPolygoon, which draws polygon, as the command holds the string polygon
                         DrawPolygon(penColor, fill, splittedParameters);
                     }
+                }
+                else if (command.Equals("var"))
+                {
+
                 }
                 else
                 {
